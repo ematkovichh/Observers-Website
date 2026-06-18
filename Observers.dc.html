@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <style>
+    *{box-sizing:border-box;}
+    body{margin:0;}
+    html{scroll-behavior:smooth;}
+    image-slot{display:block;background:var(--surface);}
+    ::selection{background:var(--accent);color:#fff;}
+    .obs-burger{display:none;}
+    @media (max-width:860px){
+      .obs-navlinks{display:none !important;}
+      .obs-burger{display:flex !important;}
+      .obs-lead{grid-template-columns:1fr !important;gap:26px !important;padding-top:30px !important;align-items:start !important;}
+      .obs-lead > image-slot{height:300px !important;}
+      .obs-lead h1{font-size:38px !important;}
+      .obs-sec{grid-template-columns:1fr !important;}
+      .obs-sec > a{border-right:none !important;border-bottom:1px solid var(--line);padding:24px 0 !important;}
+      .obs-pillars{grid-template-columns:1fr !important;gap:26px !important;}
+      .obs-latest{grid-template-columns:1fr 1fr !important;gap:30px 22px !important;}
+      .obs-gallery{grid-template-columns:1fr 1fr !important;}
+      .obs-footer{grid-template-columns:1fr 1fr !important;gap:30px !important;}
+      .obs-masthead{font-size:46px !important;}
+      .obs-catnav{justify-content:flex-start !important;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+      .obs-pad{padding-left:20px !important;padding-right:20px !important;}
+    }
+    @media (max-width:520px){
+      .obs-latest{grid-template-columns:1fr !important;}
+      .obs-footer{grid-template-columns:1fr !important;}
+      .obs-news-row{flex-direction:column !important;}
+      .obs-masthead{font-size:38px !important;}
+      .obs-lead h1{font-size:32px !important;}
+    }
+    .obs-catnav::-webkit-scrollbar{display:none;}
+  </style>
+</helmet>
+
+<div ref="{{ rootRef }}" style="--bg:#faf7f1;--surface:#efe9dd;--ink:#1a1813;--muted:#6f685b;--line:#e2dccf;--accent:#cf4420;--masthead-justify:center;--masthead-text:center;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;">
+
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="#faf7f1"/>
+      <circle cx="50" cy="50" r="22" fill="none" stroke="#cf4420" stroke-width="3"/>
+      <text x="50" y="58" font-family="Georgia,serif" font-size="26" font-weight="600" fill="#1a1813" text-anchor="middle">O</text>
+    </svg>
+  </template>
+
+  <!-- Sticky nav bar -->
+  <div style="position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line);">
+    <div class="obs-pad" style="max-width:1200px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:20px;">
+      <a href="#latest" style="font-family:'Newsreader',Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.01em;">Observers</a>
+      <div class="obs-navlinks" style="display:flex;gap:26px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;">
+        <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Culture</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Science</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Politics</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Essays</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button style="background:var(--accent);color:#fff;border:none;padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;cursor:pointer;font-family:inherit;" style-hover="filter:brightness(1.08);">Subscribe</button>
+        <button class="obs-burger" onClick="{{ toggleMenu }}" aria-label="Menu" style="flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:transparent;border:1px solid var(--line);border-radius:3px;cursor:pointer;padding:0;align-items:center;">
+          <span style="display:block;width:17px;height:1.6px;background:var(--ink);"></span>
+          <span style="display:block;width:17px;height:1.6px;background:var(--ink);"></span>
+          <span style="display:block;width:17px;height:1.6px;background:var(--ink);"></span>
+        </button>
+      </div>
+    </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div class="obs-pad" style="border-top:1px solid var(--line);padding:14px 32px 20px;display:flex;flex-direction:column;gap:4px;">
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);">Culture</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);">Science</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);">Politics</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);">Essays</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);">Photo</a>
+        <a href="#latest" style="color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;">Audio</a>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+
+  <!-- Utility bar -->
+  <div style="border-bottom:1px solid var(--line);">
+    <div style="max-width:1200px;margin:0 auto;padding:9px 32px;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.04em;color:var(--muted);">
+      <span style="text-transform:uppercase;">Thursday, June 18, 2026</span>
+      <div style="display:flex;gap:22px;align-items:center;">
+        <a href="#latest" style="color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;" style-hover="color:var(--ink);">Sign in</a>
+        <a href="#dispatch" style="color:var(--accent);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;font-weight:600;" style-hover="color:var(--ink);">Subscribe</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Masthead -->
+  <div style="max-width:1200px;margin:0 auto;padding:34px 32px 26px;text-align:var(--masthead-text);">
+    <div class="obs-masthead" style="font-family:'Newsreader',Georgia,serif;font-size:66px;font-weight:500;letter-spacing:.01em;line-height:1;">Observers</div>
+    <div style="margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.34em;color:var(--muted);">Independent reporting &amp; long-form essays · Est. 2014</div>
+  </div>
+
+  <!-- Primary nav -->
+  <div style="border-top:1px solid var(--ink);border-bottom:1px solid var(--line);">
+    <div class="obs-catnav obs-pad" style="max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:center;gap:34px;height:48px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;">
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Culture</a>
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Science</a>
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Politics</a>
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Essays</a>
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Photo</a>
+      <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Audio</a>
+    </div>
+  </div>
+
+  <!-- Lead story -->
+  <div class="obs-lead obs-pad" style="max-width:1200px;margin:0 auto;padding:48px 32px 40px;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;">
+    <image-slot id="lead" src="./images/lead.png" style="width:100%;height:480px;" shape="rounded" radius="4" placeholder="Drop lead image"></image-slot>
+    <div>
+      <div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">The Long Read · Essay</div>
+      <h1 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:50px;line-height:1.04;margin:16px 0 0;letter-spacing:-.01em;text-wrap:balance;">The quiet architecture of attention</h1>
+      <p style="font-size:18px;line-height:1.6;color:var(--muted);margin:20px 0 0;max-width:46ch;text-wrap:pretty;">Someone A/B-tested your inability to put the phone down. A note on the mechanism, and the few people quietly trying to reverse it.</p>
+      <div style="margin-top:26px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);">
+        <span style="color:var(--ink);font-weight:600;">By Mara Ellison</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block;"></span>
+        <span>14 min read</span>
+      </div>
+      <a href="#read" onClick="{{ open_lead }}" style="display:inline-block;margin-top:24px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:3px;cursor:pointer;" style-hover="color:var(--ink);border-color:var(--ink);">Read the essay →</a>
+    </div>
+  </div>
+
+  <!-- Secondary stories -->
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px 12px;">
+    <div class="obs-sec" style="border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);">
+      <a href="#read" onClick="{{ open_sec1 }}" style="text-decoration:none;color:inherit;padding:28px 28px 28px 0;border-right:1px solid var(--line);display:block;cursor:pointer;" style-hover="opacity:.82;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Science</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:22px;line-height:1.15;margin:8px 0 0;">A telescope the size of a continent</h3>
+        <div style="font-size:13px;color:var(--muted);margin-top:10px;">By Devin Park</div>
+      </a>
+      <a href="#read" onClick="{{ open_sec2 }}" style="text-decoration:none;color:inherit;padding:28px;border-right:1px solid var(--line);display:block;cursor:pointer;" style-hover="opacity:.82;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Culture</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:22px;line-height:1.15;margin:8px 0 0;">The last analog darkroom in the city</h3>
+        <div style="font-size:13px;color:var(--muted);margin-top:10px;">By Lena Cho</div>
+      </a>
+      <a href="#read" onClick="{{ open_sec3 }}" style="text-decoration:none;color:inherit;padding:28px 0 28px 28px;display:block;cursor:pointer;" style-hover="opacity:.82;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Politics</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:22px;line-height:1.15;margin:8px 0 0;">What the new water laws really mean</h3>
+        <div style="font-size:13px;color:var(--muted);margin-top:10px;">By Omar Reyes</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Manifesto / features band -->
+  <div id="why" style="background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:36px;">
+    <div style="max-width:1200px;margin:0 auto;padding:64px 32px;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Why Observers</div>
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:36px;line-height:1.1;margin:14px 0 0;max-width:22ch;">A magazine built for readers, not for the algorithm.</h2>
+      <div class="obs-pillars" style="margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;">
+        <div>
+          <div style="font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--accent);">01</div>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:21px;margin:12px 0 0;">Long-form reporting</h4>
+          <p style="font-size:15px;line-height:1.6;color:var(--muted);margin:10px 0 0;">Deeply researched stories that take the time they need, written by people on the ground.</p>
+        </div>
+        <div>
+          <div style="font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--accent);">02</div>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:21px;margin:12px 0 0;">Visual storytelling</h4>
+          <p style="font-size:15px;line-height:1.6;color:var(--muted);margin:10px 0 0;">Original photography and data, made legible — never decoration for its own sake.</p>
+        </div>
+        <div>
+          <div style="font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--accent);">03</div>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:21px;margin:12px 0 0;">Reader-supported</h4>
+          <p style="font-size:15px;line-height:1.6;color:var(--muted);margin:10px 0 0;">No paywall games and no surveillance ads. Funded entirely by the people who read it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest -->
+  <div style="max-width:1200px;margin:0 auto;padding:60px 32px 40px;" id="latest">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:14px;">
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:30px;margin:0;">Latest stories</h2>
+      <a href="#latest" style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none;" style-hover="color:var(--ink);">View all →</a>
+    </div>
+
+    <div class="obs-latest" style="margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px 36px;">
+
+      <a href="#read" onClick="{{ open_post1 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Essay</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">On learning to read slowly again</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">Attention is a muscle, not a virtue. I let mine atrophy, then ran a small experiment to get it back.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Iris Vance · Jun 16</div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post2 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Science</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">The bacteria rebuilding our coastlines</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">We taught a microbe to make rock. Either coastal defense or the slowest science-fair project ever — possibly both.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Devin Park · Jun 15</div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post3 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Culture</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">The comeback of the neighborhood cinema</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">The multiplex was supposed to win. The attendance math keeps inconveniently disagreeing.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Lena Cho · Jun 14</div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post4 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Politics</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">The mayors quietly rewriting climate policy</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">Climate policy is mostly happening in parking ordinances now. The summits haven't been told.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Omar Reyes · Jun 13</div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post5 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Photo</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">A week inside the night markets</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">The city after midnight runs a completely different program. I went to photograph the build logs.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Sol Vega · Jun 12</div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post6 }}" style="text-decoration:none;color:inherit;display:block;cursor:pointer;" style-hover="transform:translateY(-3px);">
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">Audio</div>
+        <h3 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;">The sound of a disappearing language</h3>
+        <p style="font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;">Fewer than 200 fluent speakers left. We hit record before the sample size went to zero.</p>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:12px;">Priya Nair · Jun 11</div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- In Pictures gallery -->
+  <div class="obs-pad" style="max-width:1200px;margin:0 auto;padding:8px 32px 60px;">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:14px;">
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:30px;margin:0;">In Pictures</h2>
+      <span style="font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);">Photo essays</span>
+    </div>
+    <div class="obs-gallery" style="margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+
+      <a href="#read" onClick="{{ open_post5 }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo1.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">Night Markets</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Sol Vega</div>
+        </div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post5 }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo2.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">Night Markets</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Sol Vega</div>
+        </div>
+      </a>
+
+      <a href="#read" onClick="{{ open_post5 }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo3.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">Night Markets</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Sol Vega</div>
+        </div>
+      </a>
+
+      <a href="#read" onClick="{{ open_photoroof }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo4.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">From the Rooftops</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Jun Tanaka</div>
+        </div>
+      </a>
+
+      <a href="#read" onClick="{{ open_photoroof }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo5.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">From the Rooftops</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Jun Tanaka</div>
+        </div>
+      </a>
+
+      <a href="#read" onClick="{{ open_photoroof }}" style="position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;cursor:pointer;" style-hover="opacity:.92;">
+        <img src="./images/photo6.png" alt="" style="width:100%;height:230px;object-fit:cover;display:block;" />
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));">
+          <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;">From the Rooftops</div>
+          <div style="font-size:13px;color:#f3eee3;margin-top:3px;">Jun Tanaka</div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div id="dispatch" style="background:var(--ink);color:var(--bg);margin-top:36px;">
+    <div style="max-width:760px;margin:0 auto;padding:72px 32px;text-align:center;">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">The Dispatch</div>
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:38px;line-height:1.12;margin:16px 0 0;">One email a week. The stories worth your morning.</h2>
+      <p style="font-size:16px;line-height:1.6;opacity:.7;margin:16px 0 0;">Join 84,000 readers who get our best reporting and essays before anyone else.</p>
+      <div class="obs-news-row" style="margin-top:30px;display:flex;gap:10px;max-width:440px;margin-left:auto;margin-right:auto;">
+        <input type="email" placeholder="you@email.com" style="flex:1;background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--bg);padding:13px 16px;font-size:15px;font-family:inherit;border-radius:3px;outline:none;" />
+        <button style="background:var(--accent);color:#fff;border:none;padding:13px 24px;font-size:13px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;cursor:pointer;font-family:inherit;" style-hover="filter:brightness(1.08);">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="border-top:1px solid var(--line);">
+    <div class="obs-footer obs-pad" style="max-width:1200px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;">
+      <div>
+        <div style="font-family:'Newsreader',Georgia,serif;font-size:30px;font-weight:500;">Observers</div>
+        <p style="font-size:13.5px;line-height:1.6;color:var(--muted);margin:14px 0 0;max-width:30ch;">Independent journalism, reader-supported and ad-free since 2014.</p>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Sections</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px;">
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Culture</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Science</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Politics</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Essays</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">About</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px;">
+          <a href="#why" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Our mission</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Masthead</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Careers</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Follow</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px;">
+          <a href="#dispatch" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Newsletter</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">Instagram</a>
+          <a href="#latest" style="color:var(--ink);text-decoration:none;" style-hover="color:var(--accent);">RSS</a>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid var(--line);">
+      <div style="max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);">
+        <span>© 2026 Observers Media</span>
+        <span>Privacy · Terms</span>
+      </div>
+    </div>
+  </div>
+
+  </sc-if>
+
+  <!-- Article reader -->
+  <sc-if value="{{ isReading }}" hint-placeholder-val="{{ false }}">
+    <div class="obs-pad" style="max-width:720px;margin:0 auto;padding:36px 32px 90px;">
+      <a href="#latest" onClick="{{ goHome }}" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;cursor:pointer;" style-hover="color:var(--accent);">← All stories</a>
+      <div style="margin-top:34px;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);">{{ aKicker }}</div>
+      <h1 style="font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:46px;line-height:1.08;letter-spacing:-.01em;margin:14px 0 0;text-wrap:balance;">{{ aTitle }}</h1>
+      <p style="font-size:20px;line-height:1.5;color:var(--muted);margin:20px 0 0;text-wrap:pretty;">{{ aDek }}</p>
+      <div style="margin-top:24px;padding-bottom:30px;border-bottom:1px solid var(--line);display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:13.5px;color:var(--muted);">
+        <span style="color:var(--ink);font-weight:600;">By {{ aAuthor }}</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block;"></span>
+        <span>{{ aDate }}</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block;"></span>
+        <span>{{ aRead }}</span>
+      </div>
+      <sc-if value="{{ isEssayNight }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:34px;">
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-1" src="./images/photo1.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">Stall 14, just past midnight — the bulb string is the only thing on its own circuit.</figcaption>
+          </figure>
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-2" src="./images/photo2.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">Steam off the grill catching the one blue sign still running on the block.</figcaption>
+          </figure>
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-3" src="./images/photo3.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">Closing time is a negotiation. Nobody photographs it except the regulars.</figcaption>
+          </figure>
+        </div>
+      </sc-if>
+      <sc-if value="{{ isEssayRoof }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:34px;">
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-4" src="./images/photo4.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">Dawn, east side — the water tanks go dark a full hour before the street does.</figcaption>
+          </figure>
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-5" src="./images/photo5.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">Dusk. The antennas outnumber the people up here roughly a hundred to one.</figcaption>
+          </figure>
+          <figure style="margin:0 0 30px;">
+            <image-slot id="photo-6" src="./images/photo6.png" style="width:100%;height:440px;" shape="rounded" radius="4" placeholder="Drop a photo"></image-slot>
+            <figcaption style="font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;">The skyline cliché, refused — a thousand private decisions nobody expected to be seen.</figcaption>
+          </figure>
+        </div>
+      </sc-if>
+      <div style="margin-top:34px;">
+        <sc-for list="{{ aBody }}" as="para" hint-placeholder-count="5">
+          <p style="font-family:'Newsreader',Georgia,serif;font-size:19px;line-height:1.75;color:var(--ink);margin:0 0 24px;">{{ para }}</p>
+        </sc-for>
+      </div>
+      <div style="margin-top:30px;padding-top:30px;border-top:1px solid var(--line);">
+        <a href="#latest" onClick="{{ goHome }}" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none;cursor:pointer;" style-hover="color:var(--ink);">← Back to all stories</a>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1280, &quot;height&quot;: 2600 },
+  &quot;theme&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Paper&quot;, &quot;Sepia&quot;, &quot;Ink&quot;], &quot;default&quot;: &quot;Paper&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#cf4420&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;centeredMasthead&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  rootRef = React.createRef();
+  state = { menuOpen: false, view: 'home' };
+
+  themes = {
+    Paper: {'--bg':'#faf7f1','--surface':'#efe9dd','--ink':'#1a1813','--muted':'#6f685b','--line':'#e2dccf'},
+    Sepia: {'--bg':'#f4ece0','--surface':'#e9ddc9','--ink':'#2a2114','--muted':'#7a6b53','--line':'#ddcfb8'},
+    Ink:   {'--bg':'#141310','--surface':'#1f1d17','--ink':'#f3eee3','--muted':'#a39a89','--line':'#322e26'},
+  };
+
+  applyTheme() {
+    const el = this.rootRef.current;
+    if (!el) return;
+    const t = this.themes[this.props.theme] || this.themes.Paper;
+    Object.entries(t).forEach(([k, v]) => el.style.setProperty(k, v));
+    el.style.setProperty('--accent', this.props.accent || '#cf4420');
+    const centered = this.props.centeredMasthead !== false;
+    el.style.setProperty('--masthead-justify', centered ? 'center' : 'flex-start');
+    el.style.setProperty('--masthead-text', centered ? 'center' : 'left');
+  }
+
+  componentDidMount() { this.applyTheme(); }
+  componentDidUpdate() { this.applyTheme(); }
+
+  articles = {"lead":{"kicker":"The Long Read · Essay","title":"The quiet architecture of attention","author":"Mara Ellison","date":"June 18, 2026","read":"14 min read","dek":"Someone A/B-tested your inability to put the phone down. A note on the mechanism — and on the few people quietly trying to reverse it.","body":["Here's the thing nobody says out loud: your attention isn't being “captured,” it's being engineered, on purpose, by people with dashboards. The infinite scroll, the red badge, the autoplay that starts before you've decided anything — none of it is emergent. It's all somebody's solved problem.","And to be fair, most of them started from a decent place. The original goal was to remove friction, make the software feel effortless. Reasonable. The catch is that friction was also the thing that let you stop. Sand off enough of it and the exit quietly disappears, which, in hindsight, was extremely predictable.","What you get instead is rhythm — a steady drip of small, slightly randomized rewards, spaced just unevenly enough that the next one always feels close. If that sounds like a slot machine, that's because it's the same math, relocated into your pocket and rebranded as “engagement.”","There's a small counter-movement now, mostly ex-insiders, talking about “designing for the pause” — interfaces that actually end. Nice idea. Commercially insane one, because nothing in the business model rewards the moment you close the tab satisfied. Which is sort of the whole point, and sort of why it won't scale.","Anyway. The pause might be the last genuinely interesting idea left in the field. Building something a person can put down means trusting them to come back for non-engineered reasons. Rare. Hard to measure. Probably worth doing."]},"sec1":{"kicker":"Science","title":"A telescope the size of a continent","author":"Devin Park","date":"June 17, 2026","read":"9 min read","dek":"Thirty dishes, three countries, one absurdly precise clock. Functionally a lens the size of a continent — which is a fun sentence to get to write.","body":["From the air it's underwhelming: a few dozen white dishes parked in scrubland, hundreds of kilometers apart, apparently doing nothing. Linked by atomic clocks and fiber, though, they behave as a single instrument wider than any one country could afford to build. The trick is mostly bookkeeping.","The method is called interferometry, and the short version is: record the same faint signal at every dish, timestamp it obsessively, and reconstruct one image of frankly unreasonable resolution. Good enough to resolve the shadow of a black hole — a thing we recently only had in equations.","The genuinely hard part isn't physics, it's logistics. Three governments, two languages, and a shared clock that can't drift by more than a billionth of a second. The astronomy is basically solved; the calendar invites are where it gets brutal.","If it runs at full scale, the team says it'll see the universe roughly as it looked when the first galaxies switched on — light that's been in transit for thirteen billion years and arrives, finally, at some very quiet dishes in the dark."]},"sec2":{"kicker":"Culture","title":"The last analog darkroom in the city","author":"Lena Cho","date":"June 16, 2026","read":"7 min read","dek":"A basement that smells of fixer and stubbornness, where a handful of people keep doing things the slow way on purpose.","body":["You go down past the boiler room into a red-lit hush, and the first thing you notice is that time recalibrates. Everything moves at the speed of chemistry — unhurried, exact, faintly bitter in the air. It's the last public darkroom downtown, which is either heritage or denial depending on your mood.","The members aren't nostalgists, which surprised me. A lot of them are younger than the enlargers. What pulls them in is the constraint: one frame, one exposure, no undo. In a world of infinite retries, a medium that refuses to let you retry turns out to be weirdly compelling.","Economically it makes no sense, and they know it. Film prices climb, suppliers fold, the landlord does the math on the square footage. The place survives on dues, donations, and a kind of collective obstinacy that has outlived every confident prediction of its death.","And then a print surfaces in the developer tray — a face resolving out of nothing — and the room goes quiet. One member called it the only magic trick she knows that still works every single time. Hard to argue with the data."]},"sec3":{"kicker":"Politics","title":"What the new water laws really mean","author":"Omar Reyes","date":"June 15, 2026","read":"11 min read","dek":"Three paragraphs in a budget bill quietly rewrote a century of water rights. Nobody held a press conference, which is usually the tell.","body":["The change showed up without fanfare — three paragraphs buried in a budget bill, redrawing a hundred years of water rights and shifting the balance from the farms upstream to the cities below. When something this big arrives this quietly, that's generally on purpose.","Supporters frame it as overdue, and they have a point. The old rules were written when the basin was wetter, and they let senior users legally drain the river dry while newer towns went thirsty. Defensible in 1920; a lot less so now.","Opponents see a land grab in legal costume, and they also have a point. Whole livelihoods were built around water somebody promised in perpetuity — and “perpetuity” has now been quietly redefined to mean “until the next budget cycle.”","The part nobody disputes is the arithmetic: the river is shrinking, and the law has finally stopped pretending it isn't. Everything ahead is just a fight over who absorbs the loss — which, honestly, is what water law always was."]},"post1":{"kicker":"Essay","title":"On learning to read slowly again","author":"Iris Vance","date":"June 16, 2026","read":"8 min read","dek":"Attention is a muscle, not a virtue. I let mine atrophy, ran a small experiment to rebuild it, and wrote down what happened.","body":["I used to finish a novel in a weekend. Then at some point in the last decade I noticed I couldn't get through a single page without my hand drifting toward my phone, as if the paragraph itself were the boring part. Mildly alarming, mostly just annoying.","The books hadn't changed. The muscle had. Deep reading is a trained capacity, and like anything trained it decays when every spare second gets filled with something faster and louder. “Use it or lose it” turns out to be literal, not a motivational poster.","Rebuilding it was stupidly hard at first — ten minutes, then twenty, phone in another room, the restlessness spiking and then, eventually, passing. The mind, given no interruptions, will grudgingly extend its own attention span. It just really doesn't want to.","What comes back isn't only comprehension; it's a kind of internal quiet. Following one long argument all the way to the end reminds you that some payoffs only exist on the far side of patience — a category of pleasure the feed has no interface for."]},"post2":{"kicker":"Science","title":"The bacteria rebuilding our coastlines","author":"Devin Park","date":"June 15, 2026","read":"10 min read","dek":"We taught a microbe to make rock. Either coastal defense or the world’s slowest science-fair project. Possibly both.","body":["In a seawater tank under fluorescent light, something is quietly turning dissolved minerals into stone. The agent is a bacterium; the stone is the start of an artificial reef. It is, I'll admit, very undramatic to watch.","The microbes precipitate calcium carbonate — same material as coral skeletons and seashells — gluing loose sand into solid rock in weeks instead of centuries. Nature already did this; the researchers just hit fast-forward and added a deadline.","Engineers like it because it implies self-repairing breakwaters: living seawalls that grow back after a storm instead of crumbling like concrete. Concrete, notably, does not reproduce, which is sort of its main design flaw here.","The open questions are ecological, and the team is appropriately cautious. A coastline is a web, not a wall, and they're still testing what moves in once the new rock hardens under the waves. “It works” and “it's a good idea” are, usefully, different claims."]},"post3":{"kicker":"Culture","title":"The comeback of the neighborhood cinema","author":"Lena Cho","date":"June 14, 2026","read":"6 min read","dek":"The multiplex was supposed to win this. The attendance math, inconveniently, keeps disagreeing.","body":["The multiplex was supposed to kill the corner cinema, and for a while it basically did. Yet on a wet Tuesday the single screen down the street is full while the twenty-plex by the highway runs half dark. The model that “won” is quietly losing on the metric that matters.","The survivors all ran the same play: be a place, not just a screen. Repertory nights, local filmmakers, a bar in the lobby, staff who know your name — none of which streaming can ship to your couch, and all of which are annoyingly hard to A/B test.","Most switched to nonprofit or co-op ownership, trading the pressure of quarterly returns for the patience of a community that just wants the lights to stay on. Different incentive function, different survival rate. Turns out that matters more than the popcorn margins.","It's a small economy built on belonging. People don't really come for the film; they come to sit in the dark together — which, it turns out, is the one feature the format was always actually selling. Everything else was just delivery."]},"post4":{"kicker":"Politics","title":"The mayors quietly rewriting climate policy","author":"Omar Reyes","date":"June 13, 2026","read":"12 min read","dek":"Climate policy is mostly happening in parking ordinances now. The summits have not been informed.","body":["The summits get the cameras, but the actual work is one layer down. In dozens of cities, mayors are quietly enacting the climate measures their national governments can't even agree to schedule a debate about. Less glamorous, considerably more load-bearing.","The tools are deeply unsexy: building codes, bus lanes, procurement rules, the price of a parking permit. Individually, trivial. Stacked, they move more carbon than most countries' headline pledges — pledges being, by design, easier to announce than to implement.","Cities also copy each other fast. A heat-mapping program that works in one becomes a template in twenty, passed hand-to-hand between staffers who aren't waiting on a treaty and never were. Open-source governance, more or less, minus the branding.","The limits are real — a mayor can't regulate a national grid — but the direction is set. The next decade of climate policy probably gets written less in capitals than in council chambers, by people whose names you'll never learn. Which is fine. Results don't require a logo."]},"post5":{"kicker":"Photo","title":"A week inside the night markets","author":"Sol Vega","date":"June 12, 2026","read":"5 min read","dek":"The city after midnight runs a completely different program. I went to photograph the build logs.","body":["The city has two lives and they barely share an API. The one I photographed boots up after midnight, when the shutters of the daytime version roll up again over an entirely different cast. Same hardware, different OS.","Vendors who've worked the same corner for thirty years light their burners in the dark. The lighting is all theirs — bare bulbs, gas flame, the blue wash of a phone — and it sculpts faces in a way daylight never bothers to. I mostly tried not to get in the way of it.","I gave up directing anything pretty early. The market has its own choreography and the camera's only real job was to keep up — to be pointed in the right direction when some moment of ordinary, unrepeatable grace surfaced and then dissolved.","By dawn the stalls fold away like nothing happened, which is the unsettling part. The photographs are basically the only evidence that for a few hours the city belonged entirely to the people who feed it. A few frames from the week, below."],"photos":[{"id":"photo-1","src":"./images/photo1.png","caption":"Stall 14, just past midnight — the bulb string is the only thing on its own circuit."},{"id":"photo-2","src":"./images/photo2.png","caption":"Steam off the grill catching the one blue sign still running on the block."},{"id":"photo-3","src":"./images/photo3.png","caption":"Closing time is a negotiation. Nobody photographs it except the regulars."}]},"post6":{"kicker":"Audio","title":"The sound of a disappearing language","author":"Priya Nair","date":"June 11, 2026","read":"9 min read","dek":"Fewer than 200 fluent speakers left, most over seventy. We hit record before the sample size went to zero.","body":["There are fewer than two hundred people who still speak it fluently, and most are past seventy. We went to record their voices before the silence everyone could see coming actually arrived. Not morbid, exactly. Just arithmetic.","A language isn't only words; it's a particular way of slicing the world into pieces. This one has a single term for the smell of rain on dry rock and, as far as anyone can tell, no word at all for loneliness. Make of that what you will — the linguists are still arguing.","The recordings turned into something bigger than an archive. Younger relatives started listening, then repeating, then asking their elders to teach them phrases they'd let slip decades ago. Documentation accidentally became transmission, which nobody had planned for.","Whether that's enough to save the language, no one will commit to. But watching a grandchild stumble through a sentence their grandmother assumed she'd take to the grave is, technically, a small act of survival in progress. Sample of one. Still counts."]},"photoroof":{"kicker":"Photo","title":"The city from its rooftops","author":"Jun Tanaka","date":"June 10, 2026","read":"6 min read","dek":"Up a hundred fire-escape stairs, the city resolves into something almost legible. A week spent above the street, mostly at the hours nobody schedules.","body":["Street level, the city is illegible — too much input, no overview. Climb a hundred fire-escape stairs, though, and it suddenly renders as a system: tanks, vents, antennas, the quiet infrastructure nobody designs to be seen.","The roofs are where a building keeps its honest self. Down on the facade it's all presentation; up here it's water tanks held together with faith and steel banding, decades of patch jobs stacked like sediment. I found it weirdly reassuring.","Light up there does something it can't at street level — it arrives uninterrupted, low and sideways at the edges of the day. I shot almost entirely at dawn and dusk, partly for the look, mostly because that's when the roofs are empty and nobody asks what you're doing.","None of it photographs as “a skyline,” which is the cliché I was trying to avoid. It photographs as a thousand small private decisions, made by people who assumed no one would ever be standing where I was standing. A few of them, below."],"photos":[{"id":"photo-4"},{"id":"photo-5"},{"id":"photo-6"}]}};
+
+  renderVals() {
+    const view = this.state.view || 'home';
+    const reading = view !== 'home';
+    const a = this.articles[view] || {};
+    const open = (id) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view: id, menuOpen: false }); window.scrollTo(0, 0); };
+    const vals = {
+      rootRef: this.rootRef,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      isHome: !reading,
+      isReading: reading,
+      aKicker: a.kicker, aTitle: a.title, aDek: a.dek,
+      aAuthor: a.author, aDate: a.date, aRead: a.read, aBody: a.body || [], isEssayNight: view === 'post5', isEssayRoof: view === 'photoroof',
+      goHome: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ view: 'home', menuOpen: false }); window.scrollTo(0, 0); },
+    };
+    Object.keys(this.articles).forEach(id => { vals['open_' + id] = open(id); });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
