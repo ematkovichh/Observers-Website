@@ -1,107 +1,757 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eugen Matković - Creative Design Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: #0D1F4C;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            text-align: center;
-            max-width: 600px;
-        }
-        
-        h1 {
-            font-size: clamp(48px, 8vw, 72px);
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-            font-weight: 700;
-        }
-        
-        .subtitle {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-        
-        .cta-button {
-            display: inline-block;
-            padding: 16px 48px;
-            background: #fff;
-            color: #0D1F4C;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 16px;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        .cta-button.secondary {
-            background: transparent;
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .cta-button.secondary:hover {
-            border-color: rgba(255, 255, 255, 0.7);
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .links {
-            margin-top: 60px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.5);
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observers — Independent reporting &amp; long-form essays</title>
+<meta name="description" content="Observers — independent journalism, reader-supported and ad-free since 2014.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf7f1;
+    --surface:#efe9dd;
+    --ink:#1a1813;
+    --muted:#6f685b;
+    --line:#e2dccf;
+    --accent:#cf4420;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  html{scroll-behavior:smooth;}
+  img{display:block;max-width:100%;}
+  a{cursor:pointer;}
+  ::selection{background:var(--accent);color:#fff;}
+  .serif{font-family:'Newsreader',Georgia,serif;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  .navlink{color:var(--ink);text-decoration:none;transition:color .15s;}
+  .navlink:hover{color:var(--accent);}
+  .obs-burger{display:none;}
+  .hidden{display:none !important;}
+
+  /* sticky nav */
+  .topnav{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line);}
+  .topnav-row{max-width:1200px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .logo{font-family:'Newsreader',Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.01em;}
+  .navlinks{display:flex;gap:26px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+  .navright{display:flex;align-items:center;gap:14px;}
+  .btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;cursor:pointer;font-family:inherit;transition:filter .15s;}
+  .btn:hover{filter:brightness(1.08);}
+  .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:transparent;border:1px solid var(--line);border-radius:3px;cursor:pointer;padding:0;align-items:center;}
+  .burger span{display:block;width:17px;height:1.6px;background:var(--ink);}
+  .mobile-menu{border-top:1px solid var(--line);padding:14px 32px 20px;display:flex;flex-direction:column;gap:4px;}
+  .mobile-menu a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);}
+  .mobile-menu a:last-child{border-bottom:none;}
+
+  /* utility bar */
+  .utility{border-bottom:1px solid var(--line);}
+  .utility-row{max-width:1200px;margin:0 auto;padding:9px 32px;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.04em;color:var(--muted);}
+  .utility-row a{color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;}
+  .utility-row a:hover{color:var(--ink);}
+  .utility-row .subscribe-link{color:var(--accent);font-weight:600;}
+  .utility-row .subscribe-link:hover{color:var(--ink);}
+
+  /* masthead */
+  .masthead-wrap{max-width:1200px;margin:0 auto;padding:34px 32px 26px;text-align:center;}
+  .masthead{font-family:'Newsreader',Georgia,serif;font-size:66px;font-weight:500;letter-spacing:.01em;line-height:1;}
+  .masthead-sub{margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.34em;color:var(--muted);}
+
+  /* primary nav */
+  .catnav-wrap{border-top:1px solid var(--ink);border-bottom:1px solid var(--line);}
+  .catnav{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:center;gap:34px;height:48px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;overflow-x:auto;}
+
+  /* lead story */
+  .lead{max-width:1200px;margin:0 auto;padding:48px 32px 40px;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;}
+  .lead img{width:100%;height:480px;object-fit:cover;border-radius:4px;background:var(--surface);}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+  .lead h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:50px;line-height:1.04;margin:16px 0 0;letter-spacing:-.01em;}
+  .lead p{font-size:18px;line-height:1.6;color:var(--muted);margin:20px 0 0;max-width:46ch;}
+  .byline{margin-top:26px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);}
+  .byline .name{color:var(--ink);font-weight:600;}
+  .dot{width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block;}
+  .read-link{display:inline-block;margin-top:24px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:3px;transition:color .15s,border-color .15s;}
+  .read-link:hover{color:var(--ink);border-color:var(--ink);}
+
+  /* secondary stories */
+  .sec-wrap{max-width:1200px;margin:0 auto;padding:0 32px 12px;}
+  .sec-grid{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);}
+  .sec-card{text-decoration:none;color:inherit;padding:28px;border-right:1px solid var(--line);display:block;transition:opacity .15s;}
+  .sec-card:hover{opacity:.82;}
+  .sec-card:first-child{padding-left:0;}
+  .sec-card:last-child{border-right:none;padding-right:0;}
+  .sec-card h3{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:22px;line-height:1.15;margin:8px 0 0;}
+  .sec-card .by{font-size:13px;color:var(--muted);margin-top:10px;}
+
+  /* why band */
+  .why{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:36px;}
+  .why-inner{max-width:1200px;margin:0 auto;padding:64px 32px;}
+  .why h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:36px;line-height:1.1;margin:14px 0 0;max-width:22ch;}
+  .pillars{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  .pillars .num{font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--accent);}
+  .pillars h4{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:21px;margin:12px 0 0;}
+  .pillars p{font-size:15px;line-height:1.6;color:var(--muted);margin:10px 0 0;}
+
+  /* latest */
+  .latest-wrap{max-width:1200px;margin:0 auto;padding:60px 32px 40px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:14px;}
+  .section-head h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:30px;margin:0;}
+  .viewall{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none;}
+  .viewall:hover{color:var(--ink);}
+  .latest-grid{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px 36px;}
+  .latest-card{text-decoration:none;color:inherit;display:block;transition:transform .15s;}
+  .latest-card:hover{transform:translateY(-3px);}
+  .latest-card h3{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;}
+  .latest-card p{font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;}
+  .latest-card .by{font-size:12.5px;color:var(--muted);margin-top:12px;}
+
+  /* gallery */
+  .gallery-wrap{max-width:1200px;margin:0 auto;padding:8px 32px 60px;}
+  .section-label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .gallery-grid{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .gallery-card{position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;transition:opacity .15s;}
+  .gallery-card:hover{opacity:.92;}
+  .gallery-card img{width:100%;height:230px;object-fit:cover;}
+  .gallery-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));}
+  .gallery-cap .tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;}
+  .gallery-cap .by{font-size:13px;color:#f3eee3;margin-top:3px;}
+
+  /* newsletter */
+  .dispatch{background:var(--ink);color:var(--bg);margin-top:36px;}
+  .dispatch-inner{max-width:760px;margin:0 auto;padding:72px 32px;text-align:center;}
+  .dispatch h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:38px;line-height:1.12;margin:16px 0 0;}
+  .dispatch p{font-size:16px;line-height:1.6;opacity:.7;margin:16px 0 0;}
+  .dispatch-form{margin-top:30px;display:flex;gap:10px;max-width:440px;margin-left:auto;margin-right:auto;}
+  .dispatch-form input{flex:1;background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--bg);padding:13px 16px;font-size:15px;font-family:inherit;border-radius:3px;outline:none;}
+  .dispatch-form input::placeholder{color:rgba(250,247,241,.45);}
+  .dispatch-note{margin-top:14px;font-size:13px;opacity:.6;min-height:1.2em;}
+
+  /* footer */
+  .footer{border-top:1px solid var(--line);}
+  .footer-grid{max-width:1200px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;}
+  .footer-brand{font-family:'Newsreader',Georgia,serif;font-size:30px;font-weight:500;}
+  .footer-grid p{font-size:13.5px;line-height:1.6;color:var(--muted);margin:14px 0 0;max-width:30ch;}
+  .footer-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .footer-links{margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px;}
+  .footer-bottom{border-top:1px solid var(--line);}
+  .footer-bottom-row{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);}
+
+  /* article reader */
+  .reader{max-width:720px;margin:0 auto;padding:36px 32px 90px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  .back-link:hover{color:var(--accent);}
+  .reader .eyebrow{margin-top:34px;}
+  .reader h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:46px;line-height:1.08;letter-spacing:-.01em;margin:14px 0 0;}
+  .reader .dek{font-size:20px;line-height:1.5;color:var(--muted);margin:20px 0 0;}
+  .reader-meta{margin-top:24px;padding-bottom:30px;border-bottom:1px solid var(--line);display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:13.5px;color:var(--muted);}
+  .reader-meta .name{color:var(--ink);font-weight:600;}
+  .reader-photos{margin-top:34px;}
+  .reader-photos figure{margin:0 0 30px;}
+  .reader-photos img{width:100%;height:440px;object-fit:cover;border-radius:4px;background:var(--surface);}
+  .reader-photos figcaption{font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;}
+  .reader-body{margin-top:34px;}
+  .reader-body p{font-family:'Newsreader',Georgia,serif;font-size:19px;line-height:1.7;color:var(--ink);margin:0 0 24px;}
+
+  @media (max-width:860px){
+    .navlinks{display:none !important;}
+    .burger{display:flex !important;}
+    .lead{grid-template-columns:1fr !important;gap:26px !important;padding-top:30px !important;align-items:start !important;}
+    .lead img{height:300px !important;}
+    .lead h1{font-size:38px !important;}
+    .sec-grid{grid-template-columns:1fr !important;}
+    .sec-card{border-right:none !important;border-bottom:1px solid var(--line);padding:24px 0 !important;}
+    .pillars{grid-template-columns:1fr !important;gap:26px !important;}
+    .latest-grid{grid-template-columns:1fr 1fr !important;gap:30px 22px !important;}
+    .gallery-grid{grid-template-columns:1fr 1fr !important;}
+    .footer-grid{grid-template-columns:1fr 1fr !important;gap:30px !important;}
+    .masthead{font-size:46px !important;}
+    .catnav{justify-content:flex-start !important;}
+    .wrap,.topnav-row,.utility-row,.masthead-wrap,.catnav,.lead,.sec-wrap,.why-inner,.latest-wrap,.gallery-wrap,.footer-grid,.footer-bottom-row{padding-left:20px !important;padding-right:20px !important;}
+  }
+  @media (max-width:520px){
+    .latest-grid{grid-template-columns:1fr !important;}
+    .footer-grid{grid-template-columns:1fr !important;}
+    .dispatch-form{flex-direction:column !important;}
+    .masthead{font-size:38px !important;}
+    .lead h1{font-size:32px !important;}
+    .reader h1{font-size:32px !important;}
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>Eugen Matković</h1>
-        <p class="subtitle">Creative Designer & Web Developer based in Berlin, Germany. Specializing in immersive digital experiences and innovative design solutions.</p>
-        
-        <div class="links">
-            <a href="Portfolio.dc.html" class="cta-button">View Full Portfolio</a>
-            <a href="https://github.com/ematkovichh" class="cta-button secondary" target="_blank">GitHub</a>
-        </div>
-        
-        <div class="footer">
-            <p>&copy; 2026 Eugen Matković. All rights reserved.</p>
-            <p style="margin-top: 10px;">Based in Berlin, Germany</p>
-        </div>
+
+<!-- ===== Sticky top nav ===== -->
+<div class="topnav">
+  <div class="topnav-row">
+    <a href="#latest" class="logo">Observers</a>
+    <div class="navlinks">
+      <a href="#latest" class="navlink">Culture</a>
+      <a href="#latest" class="navlink">Science</a>
+      <a href="#latest" class="navlink">Politics</a>
+      <a href="#latest" class="navlink">Essays</a>
     </div>
+    <div class="navright">
+      <button class="btn" type="button" id="navSubscribeBtn">Subscribe</button>
+      <button class="burger" id="burgerBtn" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu hidden" id="mobileMenu">
+    <a href="#latest">Culture</a>
+    <a href="#latest">Science</a>
+    <a href="#latest">Politics</a>
+    <a href="#latest">Essays</a>
+    <a href="#latest">Photo</a>
+    <a href="#latest">Audio</a>
+  </div>
+</div>
+
+<!-- ===== Home view ===== -->
+<div id="homeView">
+
+  <div class="utility">
+    <div class="utility-row">
+      <span style="text-transform:uppercase;">Thursday, June 18, 2026</span>
+      <div style="display:flex;gap:22px;align-items:center;">
+        <a href="#latest">Sign in</a>
+        <a href="#dispatch" class="subscribe-link">Subscribe</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="masthead-wrap">
+    <div class="masthead serif">Observers</div>
+    <div class="masthead-sub">Independent reporting &amp; long-form essays · Est. 2014</div>
+  </div>
+
+  <div class="catnav-wrap">
+    <div class="catnav">
+      <a href="#latest" class="navlink">Culture</a>
+      <a href="#latest" class="navlink">Science</a>
+      <a href="#latest" class="navlink">Politics</a>
+      <a href="#latest" class="navlink">Essays</a>
+      <a href="#latest" class="navlink">Photo</a>
+      <a href="#latest" class="navlink">Audio</a>
+    </div>
+  </div>
+
+  <!-- Lead story -->
+  <div class="lead">
+    <img src="./images/lead.svg" alt="The quiet architecture of attention">
+    <div>
+      <div class="eyebrow">The Long Read · Essay</div>
+      <h1 class="serif">The quiet architecture of attention</h1>
+      <p>Someone A/B-tested your inability to put the phone down. A note on the mechanism, and the few people quietly trying to reverse it.</p>
+      <div class="byline">
+        <span class="name">By Mara Ellison</span>
+        <span class="dot"></span>
+        <span>14 min read</span>
+      </div>
+      <a href="#read" class="read-link js-open" data-article="lead">Read the essay →</a>
+    </div>
+  </div>
+
+  <!-- Secondary stories -->
+  <div class="sec-wrap">
+    <div class="sec-grid">
+      <a href="#read" class="sec-card js-open" data-article="sec1">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">A telescope the size of a continent</h3>
+        <div class="by">By Devin Park</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sec2">
+        <div class="eyebrow">Culture</div>
+        <h3 class="serif">The last analog darkroom in the city</h3>
+        <div class="by">By Lena Cho</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sec3">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">What the new water laws really mean</h3>
+        <div class="by">By Omar Reyes</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Why Observers -->
+  <div class="why" id="why">
+    <div class="why-inner">
+      <div class="eyebrow">Why Observers</div>
+      <h2 class="serif">A magazine built for readers, not for the algorithm.</h2>
+      <div class="pillars">
+        <div>
+          <div class="num serif">01</div>
+          <h4 class="serif">Long-form reporting</h4>
+          <p>Deeply researched stories that take the time they need, written by people on the ground.</p>
+        </div>
+        <div>
+          <div class="num serif">02</div>
+          <h4 class="serif">Visual storytelling</h4>
+          <p>Original photography and data, made legible — never decoration for its own sake.</p>
+        </div>
+        <div>
+          <div class="num serif">03</div>
+          <h4 class="serif">Reader-supported</h4>
+          <p>No paywall games and no surveillance ads. Funded entirely by the people who read it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest -->
+  <div class="latest-wrap" id="latest">
+    <div class="section-head">
+      <h2 class="serif">Latest stories</h2>
+      <a href="#latest" class="viewall">View all →</a>
+    </div>
+    <div class="latest-grid">
+      <a href="#read" class="latest-card js-open" data-article="post1">
+        <div class="eyebrow">Essay</div>
+        <h3 class="serif">On learning to read slowly again</h3>
+        <p>Attention is a muscle, not a virtue. I let mine atrophy, then ran a small experiment to get it back.</p>
+        <div class="by">Iris Vance · Jun 16</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post2">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">The bacteria rebuilding our coastlines</h3>
+        <p>We taught a microbe to make rock. Either coastal defense or the slowest science-fair project ever — possibly both.</p>
+        <div class="by">Devin Park · Jun 15</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post3">
+        <div class="eyebrow">Culture</div>
+        <h3 class="serif">The comeback of the neighborhood cinema</h3>
+        <p>The multiplex was supposed to win. The attendance math keeps inconveniently disagreeing.</p>
+        <div class="by">Lena Cho · Jun 14</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post4">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">The mayors quietly rewriting climate policy</h3>
+        <p>Climate policy is mostly happening in parking ordinances now. The summits haven't been told.</p>
+        <div class="by">Omar Reyes · Jun 13</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post5">
+        <div class="eyebrow">Photo</div>
+        <h3 class="serif">A week inside the night markets</h3>
+        <p>The city after midnight runs a completely different program. I went to photograph the build logs.</p>
+        <div class="by">Sol Vega · Jun 12</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post6">
+        <div class="eyebrow">Audio</div>
+        <h3 class="serif">The sound of a disappearing language</h3>
+        <p>Fewer than 200 fluent speakers left. We hit record before the sample size went to zero.</p>
+        <div class="by">Priya Nair · Jun 11</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- In Pictures gallery -->
+  <div class="gallery-wrap">
+    <div class="section-head">
+      <h2 class="serif">In Pictures</h2>
+      <span class="section-label">Photo essays</span>
+    </div>
+    <div class="gallery-grid">
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="./images/photo1.svg" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="./images/photo2.svg" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="./images/photo3.svg" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="./images/photo4.svg" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="./images/photo5.svg" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="./images/photo6.svg" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="dispatch" id="dispatch">
+    <div class="dispatch-inner">
+      <div class="eyebrow">The Dispatch</div>
+      <h2 class="serif">One email a week. The stories worth your morning.</h2>
+      <p>Join 84,000 readers who get our best reporting and essays before anyone else.</p>
+      <form class="dispatch-form" id="dispatchForm">
+        <input type="email" placeholder="you@email.com" required id="dispatchEmail">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <div class="dispatch-note" id="dispatchNote"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand serif">Observers</div>
+        <p>Independent journalism, reader-supported and ad-free since 2014.</p>
+      </div>
+      <div>
+        <div class="footer-label">Sections</div>
+        <div class="footer-links">
+          <a href="#latest" class="navlink">Culture</a>
+          <a href="#latest" class="navlink">Science</a>
+          <a href="#latest" class="navlink">Politics</a>
+          <a href="#latest" class="navlink">Essays</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-label">About</div>
+        <div class="footer-links">
+          <a href="#why" class="navlink">Our mission</a>
+          <a href="#latest" class="navlink">Masthead</a>
+          <a href="#latest" class="navlink">Careers</a>
+          <a href="#latest" class="navlink">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-label">Follow</div>
+        <div class="footer-links">
+          <a href="#dispatch" class="navlink">Newsletter</a>
+          <a href="#latest" class="navlink">Instagram</a>
+          <a href="#latest" class="navlink">RSS</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-row">
+        <span>© 2026 Observers Media</span>
+        <span>Privacy · Terms</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== Article reader view ===== -->
+<div id="readerView" class="hidden">
+  <div class="reader">
+    <a href="#latest" class="back-link" id="goHomeLink">← All stories</a>
+    <div class="eyebrow" id="rKicker"></div>
+    <h1 class="serif" id="rTitle"></h1>
+    <p class="dek" id="rDek"></p>
+    <div class="reader-meta">
+      <span class="name" id="rAuthor"></span>
+      <span class="dot"></span>
+      <span id="rDate"></span>
+      <span class="dot"></span>
+      <span id="rRead"></span>
+    </div>
+    <div class="reader-photos hidden" id="rPhotos"></div>
+    <div class="reader-body" id="rBody"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var articles = {
+    "lead": {
+      kicker: "The Long Read · Essay",
+      title: "The quiet architecture of attention",
+      author: "Mara Ellison",
+      date: "June 18, 2026",
+      read: "14 min read",
+      dek: "Someone A/B-tested your inability to put the phone down. A note on the mechanism — and on the few people quietly trying to reverse it.",
+      body: [
+        "Here's the thing nobody says out loud: your attention isn't being \u201ccaptured,\u201d it's being engineered, on purpose, by people with dashboards. The infinite scroll, the red badge, the autoplay that starts before you've decided anything — none of it is emergent. It's all somebody's solved problem.",
+        "And to be fair, most of them started from a decent place. The original goal was to remove friction, make the software feel effortless. Reasonable. The catch is that friction was also the thing that let you stop. Sand off enough of it and the exit quietly disappears, which, in hindsight, was extremely predictable.",
+        "What you get instead is rhythm — a steady drip of small, slightly randomized rewards, spaced just unevenly enough that the next one always feels close. If that sounds like a slot machine, that's because it's the same math, relocated into your pocket and rebranded as \u201cengagement.\u201d",
+        "There's a small counter-movement now, mostly ex-insiders, talking about \u201cdesigning for the pause\u201d — interfaces that actually end. Nice idea. Commercially insane one, because nothing in the business model rewards the moment you close the tab satisfied. Which is sort of the whole point, and sort of why it won't scale.",
+        "Anyway. The pause might be the last genuinely interesting idea left in the field. Building something a person can put down means trusting them to come back for non-engineered reasons. Rare. Hard to measure. Probably worth doing."
+      ]
+    },
+    "sec1": {
+      kicker: "Science",
+      title: "A telescope the size of a continent",
+      author: "Devin Park",
+      date: "June 17, 2026",
+      read: "9 min read",
+      dek: "Thirty dishes, three countries, one absurdly precise clock. Functionally a lens the size of a continent — which is a fun sentence to get to write.",
+      body: [
+        "From the air it's underwhelming: a few dozen white dishes parked in scrubland, hundreds of kilometers apart, apparently doing nothing. Linked by atomic clocks and fiber, though, they behave as a single instrument wider than any one country could afford to build. The trick is mostly bookkeeping.",
+        "The method is called interferometry, and the short version is: record the same faint signal at every dish, timestamp it obsessively, and reconstruct one image of frankly unreasonable resolution. Good enough to resolve the shadow of a black hole — a thing we recently only had in equations.",
+        "The genuinely hard part isn't physics, it's logistics. Three governments, two languages, and a shared clock that can't drift by more than a billionth of a second. The astronomy is basically solved; the calendar invites are where it gets brutal.",
+        "If it runs at full scale, the team says it'll see the universe roughly as it looked when the first galaxies switched on — light that's been in transit for thirteen billion years and arrives, finally, at some very quiet dishes in the dark."
+      ]
+    },
+    "sec2": {
+      kicker: "Culture",
+      title: "The last analog darkroom in the city",
+      author: "Lena Cho",
+      date: "June 16, 2026",
+      read: "7 min read",
+      dek: "A basement that smells of fixer and stubbornness, where a handful of people keep doing things the slow way on purpose.",
+      body: [
+        "You go down past the boiler room into a red-lit hush, and the first thing you notice is that time recalibrates. Everything moves at the speed of chemistry — unhurried, exact, faintly bitter in the air. It's the last public darkroom downtown, which is either heritage or denial depending on your mood.",
+        "The members aren't nostalgists, which surprised me. A lot of them are younger than the enlargers. What pulls them in is the constraint: one frame, one exposure, no undo. In a world of infinite retries, a medium that refuses to let you retry turns out to be weirdly compelling.",
+        "Economically it makes no sense, and they know it. Film prices climb, suppliers fold, the landlord does the math on the square footage. The place survives on dues, donations, and a kind of collective obstinacy that has outlived every confident prediction of its death.",
+        "And then a print surfaces in the developer tray — a face resolving out of nothing — and the room goes quiet. One member called it the only magic trick she knows that still works every single time. Hard to argue with the data."
+      ]
+    },
+    "sec3": {
+      kicker: "Politics",
+      title: "What the new water laws really mean",
+      author: "Omar Reyes",
+      date: "June 15, 2026",
+      read: "11 min read",
+      dek: "Three paragraphs in a budget bill quietly rewrote a century of water rights. Nobody held a press conference, which is usually the tell.",
+      body: [
+        "The change showed up without fanfare — three paragraphs buried in a budget bill, redrawing a hundred years of water rights and shifting the balance from the farms upstream to the cities below. When something this big arrives this quietly, that's generally on purpose.",
+        "Supporters frame it as overdue, and they have a point. The old rules were written when the basin was wetter, and they let senior users legally drain the river dry while newer towns went thirsty. Defensible in 1920; a lot less so now.",
+        "Opponents see a land grab in legal costume, and they also have a point. Whole livelihoods were built around water somebody promised in perpetuity — and \u201cperpetuity\u201d has now been quietly redefined to mean \u201cuntil the next budget cycle.\u201d",
+        "The part nobody disputes is the arithmetic: the river is shrinking, and the law has finally stopped pretending it isn't. Everything ahead is just a fight over who absorbs the loss — which, honestly, is what water law always was."
+      ]
+    },
+    "post1": {
+      kicker: "Essay",
+      title: "On learning to read slowly again",
+      author: "Iris Vance",
+      date: "June 16, 2026",
+      read: "8 min read",
+      dek: "Attention is a muscle, not a virtue. I let mine atrophy, ran a small experiment to rebuild it, and wrote down what happened.",
+      body: [
+        "I used to finish a novel in a weekend. Then at some point in the last decade I noticed I couldn't get through a single page without my hand drifting toward my phone, as if the paragraph itself were the boring part. Mildly alarming, mostly just annoying.",
+        "The books hadn't changed. The muscle had. Deep reading is a trained capacity, and like anything trained it decays when every spare second gets filled with something faster and louder. \u201cUse it or lose it\u201d turns out to be literal, not a motivational poster.",
+        "Rebuilding it was stupidly hard at first — ten minutes, then twenty, phone in another room, the restlessness spiking and then, eventually, passing. The mind, given no interruptions, will grudgingly extend its own attention span. It just really doesn't want to.",
+        "What comes back isn't only comprehension; it's a kind of internal quiet. Following one long argument all the way to the end reminds you that some payoffs only exist on the far side of patience — a category of pleasure the feed has no interface for."
+      ]
+    },
+    "post2": {
+      kicker: "Science",
+      title: "The bacteria rebuilding our coastlines",
+      author: "Devin Park",
+      date: "June 15, 2026",
+      read: "10 min read",
+      dek: "We taught a microbe to make rock. Either coastal defense or the world\u2019s slowest science-fair project. Possibly both.",
+      body: [
+        "In a seawater tank under fluorescent light, something is quietly turning dissolved minerals into stone. The agent is a bacterium; the stone is the start of an artificial reef. It is, I'll admit, very undramatic to watch.",
+        "The microbes precipitate calcium carbonate — same material as coral skeletons and seashells — gluing loose sand into solid rock in weeks instead of centuries. Nature already did this; the researchers just hit fast-forward and added a deadline.",
+        "Engineers like it because it implies self-repairing breakwaters: living seawalls that grow back after a storm instead of crumbling like concrete. Concrete, notably, does not reproduce, which is sort of its main design flaw here.",
+        "The open questions are ecological, and the team is appropriately cautious. A coastline is a web, not a wall, and they're still testing what moves in once the new rock hardens under the waves. \u201cIt works\u201d and \u201cit's a good idea\u201d are, usefully, different claims."
+      ]
+    },
+    "post3": {
+      kicker: "Culture",
+      title: "The comeback of the neighborhood cinema",
+      author: "Lena Cho",
+      date: "June 14, 2026",
+      read: "6 min read",
+      dek: "The multiplex was supposed to win this. The attendance math, inconveniently, keeps disagreeing.",
+      body: [
+        "The multiplex was supposed to kill the corner cinema, and for a while it basically did. Yet on a wet Tuesday the single screen down the street is full while the twenty-plex by the highway runs half dark. The model that \u201cwon\u201d is quietly losing on the metric that matters.",
+        "The survivors all ran the same play: be a place, not just a screen. Repertory nights, local filmmakers, a bar in the lobby, staff who know your name — none of which streaming can ship to your couch, and all of which are annoyingly hard to A/B test.",
+        "Most switched to nonprofit or co-op ownership, trading the pressure of quarterly returns for the patience of a community that just wants the lights to stay on. Different incentive function, different survival rate. Turns out that matters more than the popcorn margins.",
+        "It's a small economy built on belonging. People don't really come for the film; they come to sit in the dark together — which, it turns out, is the one feature the format was always actually selling. Everything else was just delivery."
+      ]
+    },
+    "post4": {
+      kicker: "Politics",
+      title: "The mayors quietly rewriting climate policy",
+      author: "Omar Reyes",
+      date: "June 13, 2026",
+      read: "12 min read",
+      dek: "Climate policy is mostly happening in parking ordinances now. The summits have not been informed.",
+      body: [
+        "The summits get the cameras, but the actual work is one layer down. In dozens of cities, mayors are quietly enacting the climate measures their national governments can't even agree to schedule a debate about. Less glamorous, considerably more load-bearing.",
+        "The tools are deeply unsexy: building codes, bus lanes, procurement rules, the price of a parking permit. Individually, trivial. Stacked, they move more carbon than most countries' headline pledges — pledges being, by design, easier to announce than to implement.",
+        "Cities also copy each other fast. A heat-mapping program that works in one becomes a template in twenty, passed hand-to-hand between staffers who aren't waiting on a treaty and never were. Open-source governance, more or less, minus the branding.",
+        "The limits are real — a mayor can't regulate a national grid — but the direction is set. The next decade of climate policy probably gets written less in capitals than in council chambers, by people whose names you'll never learn. Which is fine. Results don't require a logo."
+      ]
+    },
+    "post5": {
+      kicker: "Photo",
+      title: "A week inside the night markets",
+      author: "Sol Vega",
+      date: "June 12, 2026",
+      read: "5 min read",
+      dek: "The city after midnight runs a completely different program. I went to photograph the build logs.",
+      body: [
+        "The city has two lives and they barely share an API. The one I photographed boots up after midnight, when the shutters of the daytime version roll up again over an entirely different cast. Same hardware, different OS.",
+        "Vendors who've worked the same corner for thirty years light their burners in the dark. The lighting is all theirs — bare bulbs, gas flame, the blue wash of a phone — and it sculpts faces in a way daylight never bothers to. I mostly tried not to get in the way of it.",
+        "I gave up directing anything pretty early. The market has its own choreography and the camera's only real job was to keep up — to be pointed in the right direction when some moment of ordinary, unrepeatable grace surfaced and then dissolved.",
+        "By dawn the stalls fold away like nothing happened, which is the unsettling part. The photographs are basically the only evidence that for a few hours the city belonged entirely to the people who feed it. A few frames from the week, below."
+      ],
+      photos: [
+        { src: "./images/photo1.svg", caption: "Stall 14, just past midnight — the bulb string is the only thing on its own circuit." },
+        { src: "./images/photo2.svg", caption: "Steam off the grill catching the one blue sign still running on the block." },
+        { src: "./images/photo3.svg", caption: "Closing time is a negotiation. Nobody photographs it except the regulars." }
+      ]
+    },
+    "post6": {
+      kicker: "Audio",
+      title: "The sound of a disappearing language",
+      author: "Priya Nair",
+      date: "June 11, 2026",
+      read: "9 min read",
+      dek: "Fewer than 200 fluent speakers left, most over seventy. We hit record before the sample size went to zero.",
+      body: [
+        "There are fewer than two hundred people who still speak it fluently, and most are past seventy. We went to record their voices before the silence everyone could see coming actually arrived. Not morbid, exactly. Just arithmetic.",
+        "A language isn't only words; it's a particular way of slicing the world into pieces. This one has a single term for the smell of rain on dry rock and, as far as anyone can tell, no word at all for loneliness. Make of that what you will — the linguists are still arguing.",
+        "The recordings turned into something bigger than an archive. Younger relatives started listening, then repeating, then asking their elders to teach them phrases they'd let slip decades ago. Documentation accidentally became transmission, which nobody had planned for.",
+        "Whether that's enough to save the language, no one will commit to. But watching a grandchild stumble through a sentence their grandmother assumed she'd take to the grave is, technically, a small act of survival in progress. Sample of one. Still counts."
+      ]
+    },
+    "photoroof": {
+      kicker: "Photo",
+      title: "The city from its rooftops",
+      author: "Jun Tanaka",
+      date: "June 10, 2026",
+      read: "6 min read",
+      dek: "Up a hundred fire-escape stairs, the city resolves into something almost legible. A week spent above the street, mostly at the hours nobody schedules.",
+      body: [
+        "Street level, the city is illegible — too much input, no overview. Climb a hundred fire-escape stairs, though, and it suddenly renders as a system: tanks, vents, antennas, the quiet infrastructure nobody designs to be seen.",
+        "The roofs are where a building keeps its honest self. Down on the facade it's all presentation; up here it's water tanks held together with faith and steel banding, decades of patch jobs stacked like sediment. I found it weirdly reassuring.",
+        "Light up there does something it can't at street level — it arrives uninterrupted, low and sideways at the edges of the day. I shot almost entirely at dawn and dusk, partly for the look, mostly because that's when the roofs are empty and nobody asks what you're doing.",
+        "None of it photographs as \u201ca skyline,\u201d which is the cliché I was trying to avoid. It photographs as a thousand small private decisions, made by people who assumed no one would ever be standing where I was standing. A few of them, below."
+      ],
+      photos: [
+        { src: "./images/photo4.svg", caption: "Dawn, east side — the water tanks go dark a full hour before the street does." },
+        { src: "./images/photo5.svg", caption: "A patch job from three decades back, still holding." },
+        { src: "./images/photo6.svg", caption: "Dusk is the only hour the roofs are emptied of everyone but the antennas." }
+      ]
+    }
+  };
+
+  var homeView = document.getElementById('homeView');
+  var readerView = document.getElementById('readerView');
+  var burgerBtn = document.getElementById('burgerBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+
+  // ----- Mobile menu toggle -----
+  burgerBtn.addEventListener('click', function () {
+    var isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', isOpen);
+    burgerBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  // close mobile menu after tapping a link inside it
+  mobileMenu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') {
+      mobileMenu.classList.add('hidden');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ----- Newsletter form (front-end only, no backend) -----
+  var dispatchForm = document.getElementById('dispatchForm');
+  var dispatchNote = document.getElementById('dispatchNote');
+  dispatchForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('dispatchEmail').value.trim();
+    if (email) {
+      dispatchNote.textContent = "Thanks — check " + email + " to confirm your subscription.";
+      dispatchForm.reset();
+    }
+  });
+
+  // ----- Subscribe button in nav scrolls to newsletter -----
+  document.getElementById('navSubscribeBtn').addEventListener('click', function () {
+    document.getElementById('dispatch').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ----- Article open / close -----
+  function renderArticle(id) {
+    var a = articles[id];
+    if (!a) return;
+
+    document.getElementById('rKicker').textContent = a.kicker || '';
+    document.getElementById('rTitle').textContent = a.title || '';
+    document.getElementById('rDek').textContent = a.dek || '';
+    document.getElementById('rAuthor').textContent = 'By ' + (a.author || '');
+    document.getElementById('rDate').textContent = a.date || '';
+    document.getElementById('rRead').textContent = a.read || '';
+
+    var photosEl = document.getElementById('rPhotos');
+    photosEl.innerHTML = '';
+    if (a.photos && a.photos.length) {
+      a.photos.forEach(function (p) {
+        var fig = document.createElement('figure');
+        var img = document.createElement('img');
+        img.src = p.src;
+        img.alt = a.title;
+        var cap = document.createElement('figcaption');
+        cap.textContent = p.caption;
+        fig.appendChild(img);
+        fig.appendChild(cap);
+        photosEl.appendChild(fig);
+      });
+      photosEl.classList.remove('hidden');
+    } else {
+      photosEl.classList.add('hidden');
+    }
+
+    var bodyEl = document.getElementById('rBody');
+    bodyEl.innerHTML = '';
+    (a.body || []).forEach(function (para) {
+      var p = document.createElement('p');
+      p.textContent = para;
+      bodyEl.appendChild(p);
+    });
+
+    homeView.classList.add('hidden');
+    readerView.classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
+  function goHome() {
+    readerView.classList.add('hidden');
+    homeView.classList.remove('hidden');
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('.js-open').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      renderArticle(el.getAttribute('data-article'));
+    });
+  });
+
+  document.getElementById('goHomeLink').addEventListener('click', function (e) {
+    e.preventDefault();
+    goHome();
+  });
+
+  // close mobile menu whenever a nav-style link is used to jump within the home view
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest && e.target.closest('a.navlink, .logo');
+    if (target && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>
