@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observers — Independent reporting &amp; long-form essays</title>
+<meta name="description" content="Observers — independent journalism, reader-supported and ad-free since 2014.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#faf7f1;
+    --surface:#efe9dd;
+    --ink:#1a1813;
+    --muted:#6f685b;
+    --line:#e2dccf;
+    --accent:#cf4420;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hanken Grotesk',system-ui,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased;}
+  html{scroll-behavior:smooth;}
+  img{display:block;max-width:100%;}
+  a{cursor:pointer;}
+  ::selection{background:var(--accent);color:#fff;}
+  .serif{font-family:'Newsreader',Georgia,serif;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  .navlink{color:var(--ink);text-decoration:none;transition:color .15s;}
+  .navlink:hover{color:var(--accent);}
+  .obs-burger{display:none;}
+  .hidden{display:none !important;}
+
+  /* sticky nav */
+  .topnav{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--line);}
+  .topnav-row{max-width:1200px;margin:0 auto;padding:0 32px;height:56px;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+  .logo{font-family:'Newsreader',Georgia,serif;font-size:23px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.01em;}
+  .navlinks{display:flex;gap:26px;font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;}
+  .navright{display:flex;align-items:center;gap:14px;}
+  .btn{background:var(--accent);color:#fff;border:none;padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:3px;cursor:pointer;font-family:inherit;transition:filter .15s;}
+  .btn:hover{filter:brightness(1.08);}
+  .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;background:transparent;border:1px solid var(--line);border-radius:3px;cursor:pointer;padding:0;align-items:center;}
+  .burger span{display:block;width:17px;height:1.6px;background:var(--ink);}
+  .mobile-menu{border-top:1px solid var(--line);padding:14px 32px 20px;display:flex;flex-direction:column;gap:4px;}
+  .mobile-menu a{color:var(--ink);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line);}
+  .mobile-menu a:last-child{border-bottom:none;}
+
+  /* utility bar */
+  .utility{border-bottom:1px solid var(--line);}
+  .utility-row{max-width:1200px;margin:0 auto;padding:9px 32px;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.04em;color:var(--muted);}
+  .utility-row a{color:var(--muted);text-decoration:none;text-transform:uppercase;letter-spacing:.06em;}
+  .utility-row a:hover{color:var(--ink);}
+  .utility-row .subscribe-link{color:var(--accent);font-weight:600;}
+  .utility-row .subscribe-link:hover{color:var(--ink);}
+
+  /* masthead */
+  .masthead-wrap{max-width:1200px;margin:0 auto;padding:34px 32px 26px;text-align:center;}
+  .masthead{font-family:'Newsreader',Georgia,serif;font-size:66px;font-weight:500;letter-spacing:.01em;line-height:1;}
+  .masthead-sub{margin-top:12px;font-size:11px;text-transform:uppercase;letter-spacing:.34em;color:var(--muted);}
+
+  /* primary nav */
+  .catnav-wrap{border-top:1px solid var(--ink);border-bottom:1px solid var(--line);}
+  .catnav{max-width:1200px;margin:0 auto;padding:0 32px;display:flex;align-items:center;justify-content:center;gap:34px;height:48px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;overflow-x:auto;}
+
+  /* lead story */
+  .lead{max-width:1200px;margin:0 auto;padding:48px 32px 40px;display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:center;}
+  .lead img{width:100%;height:480px;object-fit:cover;border-radius:4px;background:var(--surface);}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);}
+  .lead h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:50px;line-height:1.04;margin:16px 0 0;letter-spacing:-.01em;}
+  .lead p{font-size:18px;line-height:1.6;color:var(--muted);margin:20px 0 0;max-width:46ch;}
+  .byline{margin-top:26px;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted);}
+  .byline .name{color:var(--ink);font-weight:600;}
+  .dot{width:3px;height:3px;border-radius:50%;background:var(--muted);display:inline-block;}
+  .read-link{display:inline-block;margin-top:24px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:3px;transition:color .15s,border-color .15s;}
+  .read-link:hover{color:var(--ink);border-color:var(--ink);}
+
+  /* secondary stories */
+  .sec-wrap{max-width:1200px;margin:0 auto;padding:0 32px 12px;}
+  .sec-grid{border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);}
+  .sec-card{text-decoration:none;color:inherit;padding:28px;border-right:1px solid var(--line);display:block;transition:opacity .15s;}
+  .sec-card:hover{opacity:.82;}
+  .sec-card:first-child{padding-left:0;}
+  .sec-card:last-child{border-right:none;padding-right:0;}
+  .sec-card h3{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:22px;line-height:1.15;margin:8px 0 0;}
+  .sec-card .by{font-size:13px;color:var(--muted);margin-top:10px;}
+
+  /* why band */
+  .why{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:36px;}
+  .why-inner{max-width:1200px;margin:0 auto;padding:64px 32px;}
+  .why h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:36px;line-height:1.1;margin:14px 0 0;max-width:22ch;}
+  .pillars{margin-top:44px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  .pillars .num{font-family:'Newsreader',Georgia,serif;font-size:24px;color:var(--accent);}
+  .pillars h4{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:21px;margin:12px 0 0;}
+  .pillars p{font-size:15px;line-height:1.6;color:var(--muted);margin:10px 0 0;}
+
+  /* latest */
+  .latest-wrap{max-width:1200px;margin:0 auto;padding:60px 32px 40px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:14px;}
+  .section-head h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:30px;margin:0;}
+  .viewall{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);text-decoration:none;}
+  .viewall:hover{color:var(--ink);}
+  .latest-grid{margin-top:36px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px 36px;}
+  .latest-card{text-decoration:none;color:inherit;display:block;transition:transform .15s;}
+  .latest-card:hover{transform:translateY(-3px);}
+  .latest-card h3{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:23px;line-height:1.15;margin:8px 0 0;}
+  .latest-card p{font-size:14.5px;line-height:1.55;color:var(--muted);margin:10px 0 0;}
+  .latest-card .by{font-size:12.5px;color:var(--muted);margin-top:12px;}
+
+  /* gallery */
+  .gallery-wrap{max-width:1200px;margin:0 auto;padding:8px 32px 60px;}
+  .section-label{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);}
+  .gallery-grid{margin-top:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .gallery-card{position:relative;display:block;text-decoration:none;color:inherit;overflow:hidden;border-radius:4px;transition:opacity .15s;}
+  .gallery-card:hover{opacity:.92;}
+  .gallery-card img{width:100%;height:230px;object-fit:cover;}
+  .gallery-cap{position:absolute;left:0;right:0;bottom:0;padding:16px 14px 12px;background:linear-gradient(to top,rgba(8,6,5,0.9),rgba(8,6,5,0));}
+  .gallery-cap .tag{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f2b488;}
+  .gallery-cap .by{font-size:13px;color:#f3eee3;margin-top:3px;}
+
+  /* newsletter */
+  .dispatch{background:var(--ink);color:var(--bg);margin-top:36px;}
+  .dispatch-inner{max-width:760px;margin:0 auto;padding:72px 32px;text-align:center;}
+  .dispatch h2{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:38px;line-height:1.12;margin:16px 0 0;}
+  .dispatch p{font-size:16px;line-height:1.6;opacity:.7;margin:16px 0 0;}
+  .dispatch-form{margin-top:30px;display:flex;gap:10px;max-width:440px;margin-left:auto;margin-right:auto;}
+  .dispatch-form input{flex:1;background:transparent;border:1px solid rgba(255,255,255,.28);color:var(--bg);padding:13px 16px;font-size:15px;font-family:inherit;border-radius:3px;outline:none;}
+  .dispatch-form input::placeholder{color:rgba(250,247,241,.45);}
+  .dispatch-note{margin-top:14px;font-size:13px;opacity:.6;min-height:1.2em;}
+
+  /* footer */
+  .footer{border-top:1px solid var(--line);}
+  .footer-grid{max-width:1200px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;}
+  .footer-brand{font-family:'Newsreader',Georgia,serif;font-size:30px;font-weight:500;}
+  .footer-grid p{font-size:13.5px;line-height:1.6;color:var(--muted);margin:14px 0 0;max-width:30ch;}
+  .footer-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
+  .footer-links{margin-top:14px;display:flex;flex-direction:column;gap:9px;font-size:14px;}
+  .footer-bottom{border-top:1px solid var(--line);}
+  .footer-bottom-row{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;justify-content:space-between;font-size:12px;color:var(--muted);}
+
+  /* section views (Science / Politics / Essays) */
+  .section-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin:28px 32px 0;}
+  .section-back:hover{color:var(--accent);}
+  .section-title-wrap{max-width:1200px;margin:0 auto;padding:18px 32px 0;}
+  .section-title{font-family:'Newsreader',Georgia,serif;font-size:40px;font-weight:500;letter-spacing:-.01em;}
+  .section-desc{margin-top:8px;font-size:14.5px;color:var(--muted);max-width:56ch;}
+
+  /* article reader */
+  .reader{max-width:720px;margin:0 auto;padding:36px 32px 90px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;}
+  .back-link:hover{color:var(--accent);}
+  .reader .eyebrow{margin-top:34px;}
+  .reader h1{font-family:'Newsreader',Georgia,serif;font-weight:500;font-size:46px;line-height:1.08;letter-spacing:-.01em;margin:14px 0 0;}
+  .reader .dek{font-size:20px;line-height:1.5;color:var(--muted);margin:20px 0 0;}
+  .reader-meta{margin-top:24px;padding-bottom:30px;border-bottom:1px solid var(--line);display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:13.5px;color:var(--muted);}
+  .reader-meta .name{color:var(--ink);font-weight:600;}
+  .reader-photos{margin-top:34px;}
+  .reader-photos figure{margin:0 0 30px;}
+  .reader-photos img{width:100%;height:440px;object-fit:cover;border-radius:4px;background:var(--surface);}
+  .reader-photos figcaption{font-size:13px;color:var(--muted);margin-top:10px;font-style:italic;}
+  .reader-body{margin-top:34px;}
+  .reader-body p{font-family:'Newsreader',Georgia,serif;font-size:19px;line-height:1.7;color:var(--ink);margin:0 0 24px;}
+
+  @media (max-width:860px){
+    .navlinks{display:none !important;}
+    .burger{display:flex !important;}
+    .lead{grid-template-columns:1fr !important;gap:26px !important;padding-top:30px !important;align-items:start !important;}
+    .lead img{height:300px !important;}
+    .lead h1{font-size:38px !important;}
+    .sec-grid{grid-template-columns:1fr !important;}
+    .sec-card{border-right:none !important;border-bottom:1px solid var(--line);padding:24px 0 !important;}
+    .pillars{grid-template-columns:1fr !important;gap:26px !important;}
+    .latest-grid{grid-template-columns:1fr 1fr !important;gap:30px 22px !important;}
+    .gallery-grid{grid-template-columns:1fr 1fr !important;}
+    .footer-grid{grid-template-columns:1fr 1fr !important;gap:30px !important;}
+    .masthead{font-size:46px !important;}
+    .catnav{justify-content:flex-start !important;}
+    .wrap,.topnav-row,.utility-row,.masthead-wrap,.catnav,.lead,.sec-wrap,.why-inner,.latest-wrap,.gallery-wrap,.footer-grid,.footer-bottom-row{padding-left:20px !important;padding-right:20px !important;}
+  }
+  @media (max-width:520px){
+    .latest-grid{grid-template-columns:1fr !important;}
+    .footer-grid{grid-template-columns:1fr !important;}
+    .dispatch-form{flex-direction:column !important;}
+    .masthead{font-size:38px !important;}
+    .lead h1{font-size:32px !important;}
+    .reader h1{font-size:32px !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Sticky top nav ===== -->
+<div class="topnav">
+  <div class="topnav-row">
+    <a href="#latest" class="logo js-go-home">Observers</a>
+    <div class="navlinks">
+      <a href="#latest" class="navlink js-go-home">Culture</a>
+      <a href="#latest" class="navlink js-section" data-section="science">Science</a>
+      <a href="#latest" class="navlink js-section" data-section="politics">Politics</a>
+      <a href="#latest" class="navlink js-section" data-section="essays">Essays</a>
+    </div>
+    <div class="navright">
+      <button class="btn" type="button" id="navSubscribeBtn">Subscribe</button>
+      <button class="burger" id="burgerBtn" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu hidden" id="mobileMenu">
+    <a href="#latest" class="js-go-home">Culture</a>
+    <a href="#latest" class="js-section" data-section="science">Science</a>
+    <a href="#latest" class="js-section" data-section="politics">Politics</a>
+    <a href="#latest" class="js-section" data-section="essays">Essays</a>
+    <a href="#latest" class="js-go-home">Photo</a>
+    <a href="#latest" class="js-go-home">Audio</a>
+  </div>
+</div>
+
+<!-- ===== Home view ===== -->
+<div id="homeView">
+
+  <div class="utility">
+    <div class="utility-row">
+      <span style="text-transform:uppercase;">Thursday, June 18, 2026</span>
+      <div style="display:flex;gap:22px;align-items:center;">
+        <a href="#latest">Sign in</a>
+        <a href="#dispatch" class="subscribe-link">Subscribe</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="masthead-wrap">
+    <div class="masthead serif">Observers</div>
+    <div class="masthead-sub">Independent reporting &amp; long-form essays · Est. 2014</div>
+  </div>
+
+  <div class="catnav-wrap">
+    <div class="catnav">
+      <a href="#latest" class="navlink js-go-home">Culture</a>
+      <a href="#latest" class="navlink js-section" data-section="science">Science</a>
+      <a href="#latest" class="navlink js-section" data-section="politics">Politics</a>
+      <a href="#latest" class="navlink js-section" data-section="essays">Essays</a>
+      <a href="#latest" class="navlink js-go-home">Photo</a>
+      <a href="#latest" class="navlink js-go-home">Audio</a>
+    </div>
+  </div>
+
+  <!-- Lead story -->
+  <div class="lead">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgOTYwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9Ijk2MCI+PHJlY3Qgd2lkdGg9IjkwMCIgaGVpZ2h0PSI5NjAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDIyNSAzMTggTCAyNDkgNjM0IEEgMTE3IDExNyAwIDAgMSAxMjYgNjM0IFoiIGZpbGw9IiMxYTE4MTMiLz48cGF0aCBkPSJNIDUyMiA5NCBBIDE5NCAxOTQgMCAwIDAgNTIyIDQ4MiBaIiBmaWxsPSIjMWExODEzIi8+PHBhdGggZD0iTSA1MjIgOTQgQSAxOTQgMTk0IDAgMCAxIDUyMiA0ODIgWiIgZmlsbD0iI2UwNjMxZiIvPjxwYXRoIGQ9Ik0gNTIyIDQwMiBBIDI3MCAyNzAgMCAwIDAgNTIyIDk0MiBaIiBmaWxsPSIjZTNhNTIxIi8+PHBhdGggZD0iTSA1MjIgNDAyIEEgMjcwIDI3MCAwIDAgMSA1MjIgOTQyIFoiIGZpbGw9IiMxZjVjNTIiLz48L3N2Zz4=" alt="The quiet architecture of attention">
+    <div>
+      <div class="eyebrow">The Long Read · Essay</div>
+      <h1 class="serif">The quiet architecture of attention</h1>
+      <p>Someone A/B-tested your inability to put the phone down. A note on the mechanism, and the few people quietly trying to reverse it.</p>
+      <div class="byline">
+        <span class="name">By Mara Ellison</span>
+        <span class="dot"></span>
+        <span>14 min read</span>
+      </div>
+      <a href="#read" class="read-link js-open" data-article="lead">Read the essay →</a>
+    </div>
+  </div>
+
+  <!-- Secondary stories -->
+  <div class="sec-wrap">
+    <div class="sec-grid">
+      <a href="#read" class="sec-card js-open" data-article="sec1">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">A telescope the size of a continent</h3>
+        <div class="by">By Devin Park</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sec2">
+        <div class="eyebrow">Culture</div>
+        <h3 class="serif">The last analog darkroom in the city</h3>
+        <div class="by">By Lena Cho</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sec3">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">What the new water laws really mean</h3>
+        <div class="by">By Omar Reyes</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Why Observers -->
+  <div class="why" id="why">
+    <div class="why-inner">
+      <div class="eyebrow">Why Observers</div>
+      <h2 class="serif">A magazine built for readers, not for the algorithm.</h2>
+      <div class="pillars">
+        <div>
+          <div class="num serif">01</div>
+          <h4 class="serif">Long-form reporting</h4>
+          <p>Deeply researched stories that take the time they need, written by people on the ground.</p>
+        </div>
+        <div>
+          <div class="num serif">02</div>
+          <h4 class="serif">Visual storytelling</h4>
+          <p>Original photography and data, made legible — never decoration for its own sake.</p>
+        </div>
+        <div>
+          <div class="num serif">03</div>
+          <h4 class="serif">Reader-supported</h4>
+          <p>No paywall games and no surveillance ads. Funded entirely by the people who read it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest -->
+  <div class="latest-wrap" id="latest">
+    <div class="section-head">
+      <h2 class="serif">Latest stories</h2>
+      <a href="#latest" class="viewall">View all →</a>
+    </div>
+    <div class="latest-grid">
+      <a href="#read" class="latest-card js-open" data-article="post1">
+        <div class="eyebrow">Essay</div>
+        <h3 class="serif">On learning to read slowly again</h3>
+        <p>Attention is a muscle, not a virtue. I let mine atrophy, then ran a small experiment to get it back.</p>
+        <div class="by">Iris Vance · Jun 16</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post2">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">The bacteria rebuilding our coastlines</h3>
+        <p>We taught a microbe to make rock. Either coastal defense or the slowest science-fair project ever — possibly both.</p>
+        <div class="by">Devin Park · Jun 15</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post3">
+        <div class="eyebrow">Culture</div>
+        <h3 class="serif">The comeback of the neighborhood cinema</h3>
+        <p>The multiplex was supposed to win. The attendance math keeps inconveniently disagreeing.</p>
+        <div class="by">Lena Cho · Jun 14</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post4">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">The mayors quietly rewriting climate policy</h3>
+        <p>Climate policy is mostly happening in parking ordinances now. The summits haven't been told.</p>
+        <div class="by">Omar Reyes · Jun 13</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post5">
+        <div class="eyebrow">Photo</div>
+        <h3 class="serif">A week inside the night markets</h3>
+        <p>The city after midnight runs a completely different program. I went to photograph the build logs.</p>
+        <div class="by">Sol Vega · Jun 12</div>
+      </a>
+      <a href="#read" class="latest-card js-open" data-article="post6">
+        <div class="eyebrow">Audio</div>
+        <h3 class="serif">The sound of a disappearing language</h3>
+        <p>Fewer than 200 fluent speakers left. We hit record before the sample size went to zero.</p>
+        <div class="by">Priya Nair · Jun 11</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- In Pictures gallery -->
+  <div class="gallery-wrap">
+    <div class="section-head">
+      <h2 class="serif">In Pictures</h2>
+      <span class="section-label">Photo essays</span>
+    </div>
+    <div class="gallery-grid">
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDAgNDM0IEEgMjEwIDIxMCAwIDAgMSA0MjAgNDM0IFoiIGZpbGw9IiNlMDYzMWYiLz48cGF0aCBkPSJNIDM1MCA0NjIgQSAxNjggMTY4IDAgMCAxIDY4NiA0NjIgWiIgZmlsbD0iI2UzYTUyMSIvPjxjaXJjbGUgY3g9IjIxMCIgY3k9IjIxMCIgcj0iOTEiIGZpbGw9IiMxYTE4MTMiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA1NDYgQSAxNTQgMTU0IDAgMCAxIDE1NCA3MDAgWiIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDM1MCAxMDUgQSAyMTAgMjEwIDAgMCAwIDM1MCA1MjUgWiIgZmlsbD0iI2UzYTUyMSIvPjxwYXRoIGQ9Ik0gMzUwIDEwNSBBIDIxMCAyMTAgMCAwIDEgMzUwIDUyNSBaIiBmaWxsPSIjZTA2MzFmIi8+PHBhdGggZD0iTSAwIDcwMCBMIDIzOCA3MDAgTCAwIDM4NSBaIiBmaWxsPSIjMWExODEzIi8+PGNpcmNsZSBjeD0iNTg4IiBjeT0iMTQwIiByPSI4NCIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="post5">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDAgMCBMIDQzNCAwIEEgNDM0IDQzNCAwIDAgMSAwIDQzNCBaIiBmaWxsPSIjZTA2MzFmIi8+PHBhdGggZD0iTSA3MDAgNzAwIEwgMzE1IDcwMCBBIDM4NSAzODUgMCAwIDEgNzAwIDMxNSBaIiBmaWxsPSIjZTNhNTIxIi8+PGNpcmNsZSBjeD0iMTU0IiBjeT0iNTQ2IiByPSI4NCIgZmlsbD0iIzFhMTgxMyIvPjxwYXRoIGQ9Ik0gNzAwIDAgTCA3MDAgMjEwIEEgMjEwIDIxMCAwIDAgMSA0OTAgMCBaIiBmaWxsPSIjMWY1YzUyIi8+PC9zdmc+" alt="Night Markets">
+        <div class="gallery-cap">
+          <div class="tag">Night Markets</div>
+          <div class="by">Sol Vega</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDI4IDQ2MiBBIDMyMiAzMjIgMCAwIDEgNjcyIDQ2MiBaIiBmaWxsPSIjZTA2MzFmIi8+PGNpcmNsZSBjeD0iMzUwIiBjeT0iNDYyIiByPSIxMjYiIGZpbGw9IiNlM2E1MjEiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA0OTAgQSAyMTAgMjEwIDAgMCAxIDIxMCA3MDAgWiIgZmlsbD0iIzFhMTgxMyIvPjxwYXRoIGQ9Ik0gNzAwIDcwMCBMIDU0NiA3MDAgQSAxNTQgMTU0IDAgMCAxIDcwMCA1NDYgWiIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDM1MCA1NiBBIDE2OCAxNjggMCAwIDAgMzUwIDM5MiBaIiBmaWxsPSIjMWExODEzIi8+PHBhdGggZD0iTSAzNTAgNTYgQSAxNjggMTY4IDAgMCAxIDM1MCAzOTIgWiIgZmlsbD0iIzFmNWM1MiIvPjxwYXRoIGQ9Ik0gMCA3MDAgTCAzNTAgNDIwIEwgNzAwIDcwMCBaIiBmaWxsPSIjZTNhNTIxIi8+PGNpcmNsZSBjeD0iMTI2IiBjeT0iNTQ2IiByPSI2MyIgZmlsbD0iI2UwNjMxZiIvPjwvc3ZnPg==" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+      <a href="#read" class="gallery-card js-open" data-article="photoroof">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDQ0OCAxODggTCA0NjcgNDM0IEEgOTEgOTEgMCAwIDEgMzcxIDQzNCBaIiBmaWxsPSIjMWY1YzUyIi8+PGNpcmNsZSBjeD0iMTk2IiBjeT0iMjEwIiByPSIxNDAiIGZpbGw9IiNlMDYzMWYiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA0NjIgQSAyMzggMjM4IDAgMCAxIDIzOCA3MDAgWiIgZmlsbD0iI2UzYTUyMSIvPjwvc3ZnPg==" alt="From the Rooftops">
+        <div class="gallery-cap">
+          <div class="tag">From the Rooftops</div>
+          <div class="by">Jun Tanaka</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Newsletter -->
+  <div class="dispatch" id="dispatch">
+    <div class="dispatch-inner">
+      <div class="eyebrow">The Dispatch</div>
+      <h2 class="serif">One email a week. The stories worth your morning.</h2>
+      <p>Join 84,000 readers who get our best reporting and essays before anyone else.</p>
+      <form class="dispatch-form" id="dispatchForm">
+        <input type="email" placeholder="you@email.com" required id="dispatchEmail">
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <div class="dispatch-note" id="dispatchNote"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand serif">Observers</div>
+        <p>Independent journalism, reader-supported and ad-free since 2014.</p>
+      </div>
+      <div>
+        <div class="footer-label">Sections</div>
+        <div class="footer-links">
+          <a href="#latest" class="navlink js-go-home">Culture</a>
+          <a href="#latest" class="navlink js-section" data-section="science">Science</a>
+          <a href="#latest" class="navlink js-section" data-section="politics">Politics</a>
+          <a href="#latest" class="navlink js-section" data-section="essays">Essays</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-label">About</div>
+        <div class="footer-links">
+          <a href="#why" class="navlink">Our mission</a>
+          <a href="#latest" class="navlink">Masthead</a>
+          <a href="#latest" class="navlink">Careers</a>
+          <a href="#latest" class="navlink">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-label">Follow</div>
+        <div class="footer-links">
+          <a href="#dispatch" class="navlink">Newsletter</a>
+          <a href="#latest" class="navlink">Instagram</a>
+          <a href="#latest" class="navlink">RSS</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-row">
+        <span>© 2026 Observers Media</span>
+        <span>Privacy · Terms</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== Science section view ===== -->
+<div id="scienceView" class="hidden">
+  <a href="#latest" class="section-back js-go-home">← Back to Observers</a>
+  <div class="section-title-wrap">
+    <div class="section-title serif">Science</div>
+    <div class="section-desc">Mechanism over narrative. What the data can and can't actually tell you.</div>
+  </div>
+
+  <div class="lead">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDM3OCA0MiBBIDIzNCAyMzQgMCAwIDAgMzc4IDUxMCBaIiBmaWxsPSIjMWExODEzIi8+PHBhdGggZD0iTSAzNzggNDIgQSAyMzQgMjM0IDAgMCAxIDM3OCA1MTAgWiIgZmlsbD0iIzFmNWM1MiIvPjxwYXRoIGQ9Ik0gOTAwIDYwMCBMIDUyMiA2MDAgQSAzNzggMzc4IDAgMCAxIDkwMCAyMjIgWiIgZmlsbD0iI2UzYTUyMSIvPjxjaXJjbGUgY3g9IjcwOSIgY3k9IjMzMSIgcj0iMTYiIGZpbGw9IiNlMDYzMWYiLz48Y2lyY2xlIGN4PSI4MTAiIGN5PSIzMzAiIHI9IjE2IiBmaWxsPSIjZTA2MzFmIi8+PGNpcmNsZSBjeD0iNTIyIiBjeT0iMjQ4IiByPSIxMCIgZmlsbD0iI2UwNjMxZiIvPjxjaXJjbGUgY3g9IjcxNyIgY3k9IjM3OCIgcj0iMTAiIGZpbGw9IiNlMDYzMWYiLz48Y2lyY2xlIGN4PSI2MzAiIGN5PSIzNjkiIHI9IjEzIiBmaWxsPSIjZTA2MzFmIi8+PGNpcmNsZSBjeD0iNjg0IiBjeT0iMjgwIiByPSIxMCIgZmlsbD0iI2UwNjMxZiIvPjwvc3ZnPg==" alt="Why most of what you read about the gene for X is structurally misleading">
+    <div>
+      <div class="eyebrow">Science · Lead</div>
+      <h1 class="serif">Why most of what you read about &ldquo;the gene for X&rdquo; is structurally misleading</h1>
+      <p>Not a claim that genetics is fake. A claim about what a correlation coefficient is and isn't allowed to tell you, and why headline writers keep ignoring the difference.</p>
+      <div class="byline">
+        <span class="name">By Theo Brandt</span>
+        <span class="dot"></span>
+        <span>13 min read</span>
+      </div>
+      <a href="#read" class="read-link js-open" data-article="sci-main">Read the piece →</a>
+    </div>
+  </div>
+
+  <div class="sec-wrap">
+    <div class="section-head" style="border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:0;">
+      <h2 class="serif" style="font-size:24px;">More in Science</h2>
+    </div>
+    <div class="sec-grid">
+      <a href="#read" class="sec-card js-open" data-article="sci1">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">The replication crisis was never really about fraud</h3>
+        <div class="by">By Theo Brandt</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sci2">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">Entropy is not &ldquo;disorder.&rdquo; It never was.</h3>
+        <div class="by">By Theo Brandt</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="sci3">
+        <div class="eyebrow">Science</div>
+        <h3 class="serif">Why &ldquo;correlation isn't causation&rdquo; is usually said wrong</h3>
+        <div class="by">By Devin Park</div>
+      </a>
+    </div>
+  </div>
+
+  <div style="height:60px;"></div>
+</div>
+
+<!-- ===== Politics section view ===== -->
+<div id="politicsView" class="hidden">
+  <a href="#latest" class="section-back js-go-home">← Back to Observers</a>
+  <div class="section-title-wrap">
+    <div class="section-title serif">Politics</div>
+    <div class="section-desc">Incentive structures and unstated assumptions, separated from the values debate they usually get mistaken for.</div>
+  </div>
+
+  <div class="lead">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDQ1MCAtNiBBIDMwNiAzMDYgMCAwIDAgNDUwIDYwNiBaIiBmaWxsPSIjMWExODEzIi8+PHBhdGggZD0iTSA0NTAgLTYgQSAzMDYgMzA2IDAgMCAxIDQ1MCA2MDYgWiIgZmlsbD0iI2UwNjMxZiIvPjxjaXJjbGUgY3g9Ijc3NCIgY3k9IjEyMCIgcj0iOTAiIGZpbGw9IiNlM2E1MjEiLz48cGF0aCBkPSJNIDAgMCBMIDIzNCAwIEEgMjM0IDIzNCAwIDAgMSAwIDIzNCBaIiBmaWxsPSIjMWY1YzUyIi8+PC9zdmc+" alt="Most policy disagreement isn't about values">
+    <div>
+      <div class="eyebrow">Politics · Lead</div>
+      <h1 class="serif">Most policy disagreement isn't about values. It's about unstated empirical assumptions.</h1>
+      <p>Two people can share a value completely and still disagree violently on policy, because they're running different models of how the world responds to an intervention.</p>
+      <div class="byline">
+        <span class="name">By Sasha Reinholt</span>
+        <span class="dot"></span>
+        <span>12 min read</span>
+      </div>
+      <a href="#read" class="read-link js-open" data-article="pol-main">Read the piece →</a>
+    </div>
+  </div>
+
+  <div class="sec-wrap">
+    <div class="section-head" style="border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:0;">
+      <h2 class="serif" style="font-size:24px;">More in Politics</h2>
+    </div>
+    <div class="sec-grid">
+      <a href="#read" class="sec-card js-open" data-article="pol1">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">Regulatory capture isn't a conspiracy. It's an incentive gradient.</h3>
+        <div class="by">By Sasha Reinholt</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="pol2">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">Why &ldquo;the silent majority&rdquo; is usually a measurement artifact</h3>
+        <div class="by">By Omar Reyes</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="pol3">
+        <div class="eyebrow">Politics</div>
+        <h3 class="serif">Term limits solve one principal-agent problem and create another</h3>
+        <div class="by">By Sasha Reinholt</div>
+      </a>
+    </div>
+  </div>
+
+  <div style="height:60px;"></div>
+</div>
+
+<!-- ===== Essays section view ===== -->
+<div id="essaysView" class="hidden">
+  <a href="#latest" class="section-back js-go-home">← Back to Observers</a>
+  <div class="section-title-wrap">
+    <div class="section-title serif">Essays</div>
+    <div class="section-desc">Reasoning about reasoning. Mostly an attempt to find where an argument actually lives before having it.</div>
+  </div>
+
+  <div class="lead">
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5MDAgNjAwIiB3aWR0aD0iOTAwIiBoZWlnaHQ9IjYwMCI+PHJlY3Qgd2lkdGg9IjkwMCIgaGVpZ2h0PSI2MDAiIGZpbGw9IiNmYWY3ZjEiLz48Y2lyY2xlIGN4PSIzNjAiIGN5PSIyNTIiIHI9IjIxNiIgZmlsbD0iIzFhMTgxMyIvPjxjaXJjbGUgY3g9IjU0MCIgY3k9IjI0MCIgcj0iMTgwIiBmaWxsPSIjZTA2MzFmIi8+PGNpcmNsZSBjeD0iNDUwIiBjeT0iMzg0IiByPSIxNzEiIGZpbGw9IiNlM2E1MjEiLz48Y2lyY2xlIGN4PSI0NTAiIGN5PSIzMDAiIHI9IjU0IiBmaWxsPSIjMWY1YzUyIi8+PC9zdmc+" alt="On the difference between a category and a cluster">
+    <div>
+      <div class="eyebrow">Essays · Lead</div>
+      <h1 class="serif">On the difference between a category and a cluster</h1>
+      <p>Most arguments about whether something &ldquo;counts&rdquo; as X are arguments about where to draw a boundary in continuous space. Noticing that doesn't dissolve the disagreement, but it does relocate it somewhere more honest.</p>
+      <div class="byline">
+        <span class="name">By Iris Vance</span>
+        <span class="dot"></span>
+        <span>11 min read</span>
+      </div>
+      <a href="#read" class="read-link js-open" data-article="essay-main">Read the essay →</a>
+    </div>
+  </div>
+
+  <div class="sec-wrap">
+    <div class="section-head" style="border-bottom:1px solid var(--ink);padding-bottom:14px;margin-bottom:0;">
+      <h2 class="serif" style="font-size:24px;">More Essays</h2>
+    </div>
+    <div class="sec-grid">
+      <a href="#read" class="sec-card js-open" data-article="essay1">
+        <div class="eyebrow">Essays</div>
+        <h3 class="serif">The map is not the territory, but most arguments are about the map</h3>
+        <div class="by">By Iris Vance</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="essay2">
+        <div class="eyebrow">Essays</div>
+        <h3 class="serif">Steelmanning is harder than it sounds, and usually done wrong</h3>
+        <div class="by">By Iris Vance</div>
+      </a>
+      <a href="#read" class="sec-card js-open" data-article="essay3">
+        <div class="eyebrow">Essays</div>
+        <h3 class="serif">Why &ldquo;I just have a feeling&rdquo; is sometimes a valid epistemic input</h3>
+        <div class="by">By Mara Ellison</div>
+      </a>
+    </div>
+  </div>
+
+  <div style="height:60px;"></div>
+</div>
+
+<!-- ===== Article reader view ===== -->
+<div id="readerView" class="hidden">
+  <div class="reader">
+    <a href="#latest" class="back-link" id="goHomeLink">← All stories</a>
+    <div class="eyebrow" id="rKicker"></div>
+    <h1 class="serif" id="rTitle"></h1>
+    <p class="dek" id="rDek"></p>
+    <div class="reader-meta">
+      <span class="name" id="rAuthor"></span>
+      <span class="dot"></span>
+      <span id="rDate"></span>
+      <span class="dot"></span>
+      <span id="rRead"></span>
+    </div>
+    <div class="reader-photos hidden" id="rPhotos"></div>
+    <div class="reader-body" id="rBody"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var articles = {
+    "lead": {
+      kicker: "The Long Read · Essay",
+      title: "The quiet architecture of attention",
+      author: "Mara Ellison",
+      date: "June 18, 2026",
+      read: "14 min read",
+      dek: "Someone A/B-tested your inability to put the phone down. A note on the mechanism — and on the few people quietly trying to reverse it.",
+      body: [
+        "Here's the thing nobody says out loud: your attention isn't being \u201ccaptured,\u201d it's being engineered, on purpose, by people with dashboards. The infinite scroll, the red badge, the autoplay that starts before you've decided anything — none of it is emergent. It's all somebody's solved problem.",
+        "And to be fair, most of them started from a decent place. The original goal was to remove friction, make the software feel effortless. Reasonable. The catch is that friction was also the thing that let you stop. Sand off enough of it and the exit quietly disappears, which, in hindsight, was extremely predictable.",
+        "What you get instead is rhythm — a steady drip of small, slightly randomized rewards, spaced just unevenly enough that the next one always feels close. If that sounds like a slot machine, that's because it's the same math, relocated into your pocket and rebranded as \u201cengagement.\u201d",
+        "There's a small counter-movement now, mostly ex-insiders, talking about \u201cdesigning for the pause\u201d — interfaces that actually end. Nice idea. Commercially insane one, because nothing in the business model rewards the moment you close the tab satisfied. Which is sort of the whole point, and sort of why it won't scale.",
+        "Anyway. The pause might be the last genuinely interesting idea left in the field. Building something a person can put down means trusting them to come back for non-engineered reasons. Rare. Hard to measure. Probably worth doing."
+      ]
+    },
+    "sec1": {
+      kicker: "Science",
+      title: "A telescope the size of a continent",
+      author: "Devin Park",
+      date: "June 17, 2026",
+      read: "9 min read",
+      dek: "Thirty dishes, three countries, one absurdly precise clock. Functionally a lens the size of a continent — which is a fun sentence to get to write.",
+      body: [
+        "From the air it's underwhelming: a few dozen white dishes parked in scrubland, hundreds of kilometers apart, apparently doing nothing. Linked by atomic clocks and fiber, though, they behave as a single instrument wider than any one country could afford to build. The trick is mostly bookkeeping.",
+        "The method is called interferometry, and the short version is: record the same faint signal at every dish, timestamp it obsessively, and reconstruct one image of frankly unreasonable resolution. Good enough to resolve the shadow of a black hole — a thing we recently only had in equations.",
+        "The genuinely hard part isn't physics, it's logistics. Three governments, two languages, and a shared clock that can't drift by more than a billionth of a second. The astronomy is basically solved; the calendar invites are where it gets brutal.",
+        "If it runs at full scale, the team says it'll see the universe roughly as it looked when the first galaxies switched on — light that's been in transit for thirteen billion years and arrives, finally, at some very quiet dishes in the dark."
+      ]
+    },
+    "sec2": {
+      kicker: "Culture",
+      title: "The last analog darkroom in the city",
+      author: "Lena Cho",
+      date: "June 16, 2026",
+      read: "7 min read",
+      dek: "A basement that smells of fixer and stubbornness, where a handful of people keep doing things the slow way on purpose.",
+      body: [
+        "You go down past the boiler room into a red-lit hush, and the first thing you notice is that time recalibrates. Everything moves at the speed of chemistry — unhurried, exact, faintly bitter in the air. It's the last public darkroom downtown, which is either heritage or denial depending on your mood.",
+        "The members aren't nostalgists, which surprised me. A lot of them are younger than the enlargers. What pulls them in is the constraint: one frame, one exposure, no undo. In a world of infinite retries, a medium that refuses to let you retry turns out to be weirdly compelling.",
+        "Economically it makes no sense, and they know it. Film prices climb, suppliers fold, the landlord does the math on the square footage. The place survives on dues, donations, and a kind of collective obstinacy that has outlived every confident prediction of its death.",
+        "And then a print surfaces in the developer tray — a face resolving out of nothing — and the room goes quiet. One member called it the only magic trick she knows that still works every single time. Hard to argue with the data."
+      ]
+    },
+    "sec3": {
+      kicker: "Politics",
+      title: "What the new water laws really mean",
+      author: "Omar Reyes",
+      date: "June 15, 2026",
+      read: "11 min read",
+      dek: "Three paragraphs in a budget bill quietly rewrote a century of water rights. Nobody held a press conference, which is usually the tell.",
+      body: [
+        "The change showed up without fanfare — three paragraphs buried in a budget bill, redrawing a hundred years of water rights and shifting the balance from the farms upstream to the cities below. When something this big arrives this quietly, that's generally on purpose.",
+        "Supporters frame it as overdue, and they have a point. The old rules were written when the basin was wetter, and they let senior users legally drain the river dry while newer towns went thirsty. Defensible in 1920; a lot less so now.",
+        "Opponents see a land grab in legal costume, and they also have a point. Whole livelihoods were built around water somebody promised in perpetuity — and \u201cperpetuity\u201d has now been quietly redefined to mean \u201cuntil the next budget cycle.\u201d",
+        "The part nobody disputes is the arithmetic: the river is shrinking, and the law has finally stopped pretending it isn't. Everything ahead is just a fight over who absorbs the loss — which, honestly, is what water law always was."
+      ]
+    },
+    "post1": {
+      kicker: "Essay",
+      title: "On learning to read slowly again",
+      author: "Iris Vance",
+      date: "June 16, 2026",
+      read: "8 min read",
+      dek: "Attention is a muscle, not a virtue. I let mine atrophy, ran a small experiment to rebuild it, and wrote down what happened.",
+      body: [
+        "I used to finish a novel in a weekend. Then at some point in the last decade I noticed I couldn't get through a single page without my hand drifting toward my phone, as if the paragraph itself were the boring part. Mildly alarming, mostly just annoying.",
+        "The books hadn't changed. The muscle had. Deep reading is a trained capacity, and like anything trained it decays when every spare second gets filled with something faster and louder. \u201cUse it or lose it\u201d turns out to be literal, not a motivational poster.",
+        "Rebuilding it was stupidly hard at first — ten minutes, then twenty, phone in another room, the restlessness spiking and then, eventually, passing. The mind, given no interruptions, will grudgingly extend its own attention span. It just really doesn't want to.",
+        "What comes back isn't only comprehension; it's a kind of internal quiet. Following one long argument all the way to the end reminds you that some payoffs only exist on the far side of patience — a category of pleasure the feed has no interface for."
+      ]
+    },
+    "post2": {
+      kicker: "Science",
+      title: "The bacteria rebuilding our coastlines",
+      author: "Devin Park",
+      date: "June 15, 2026",
+      read: "10 min read",
+      dek: "We taught a microbe to make rock. Either coastal defense or the world\u2019s slowest science-fair project. Possibly both.",
+      body: [
+        "In a seawater tank under fluorescent light, something is quietly turning dissolved minerals into stone. The agent is a bacterium; the stone is the start of an artificial reef. It is, I'll admit, very undramatic to watch.",
+        "The microbes precipitate calcium carbonate — same material as coral skeletons and seashells — gluing loose sand into solid rock in weeks instead of centuries. Nature already did this; the researchers just hit fast-forward and added a deadline.",
+        "Engineers like it because it implies self-repairing breakwaters: living seawalls that grow back after a storm instead of crumbling like concrete. Concrete, notably, does not reproduce, which is sort of its main design flaw here.",
+        "The open questions are ecological, and the team is appropriately cautious. A coastline is a web, not a wall, and they're still testing what moves in once the new rock hardens under the waves. \u201cIt works\u201d and \u201cit's a good idea\u201d are, usefully, different claims."
+      ]
+    },
+    "post3": {
+      kicker: "Culture",
+      title: "The comeback of the neighborhood cinema",
+      author: "Lena Cho",
+      date: "June 14, 2026",
+      read: "6 min read",
+      dek: "The multiplex was supposed to win this. The attendance math, inconveniently, keeps disagreeing.",
+      body: [
+        "The multiplex was supposed to kill the corner cinema, and for a while it basically did. Yet on a wet Tuesday the single screen down the street is full while the twenty-plex by the highway runs half dark. The model that \u201cwon\u201d is quietly losing on the metric that matters.",
+        "The survivors all ran the same play: be a place, not just a screen. Repertory nights, local filmmakers, a bar in the lobby, staff who know your name — none of which streaming can ship to your couch, and all of which are annoyingly hard to A/B test.",
+        "Most switched to nonprofit or co-op ownership, trading the pressure of quarterly returns for the patience of a community that just wants the lights to stay on. Different incentive function, different survival rate. Turns out that matters more than the popcorn margins.",
+        "It's a small economy built on belonging. People don't really come for the film; they come to sit in the dark together — which, it turns out, is the one feature the format was always actually selling. Everything else was just delivery."
+      ]
+    },
+    "post4": {
+      kicker: "Politics",
+      title: "The mayors quietly rewriting climate policy",
+      author: "Omar Reyes",
+      date: "June 13, 2026",
+      read: "12 min read",
+      dek: "Climate policy is mostly happening in parking ordinances now. The summits have not been informed.",
+      body: [
+        "The summits get the cameras, but the actual work is one layer down. In dozens of cities, mayors are quietly enacting the climate measures their national governments can't even agree to schedule a debate about. Less glamorous, considerably more load-bearing.",
+        "The tools are deeply unsexy: building codes, bus lanes, procurement rules, the price of a parking permit. Individually, trivial. Stacked, they move more carbon than most countries' headline pledges — pledges being, by design, easier to announce than to implement.",
+        "Cities also copy each other fast. A heat-mapping program that works in one becomes a template in twenty, passed hand-to-hand between staffers who aren't waiting on a treaty and never were. Open-source governance, more or less, minus the branding.",
+        "The limits are real — a mayor can't regulate a national grid — but the direction is set. The next decade of climate policy probably gets written less in capitals than in council chambers, by people whose names you'll never learn. Which is fine. Results don't require a logo."
+      ]
+    },
+    "post5": {
+      kicker: "Photo",
+      title: "A week inside the night markets",
+      author: "Sol Vega",
+      date: "June 12, 2026",
+      read: "5 min read",
+      dek: "The city after midnight runs a completely different program. I went to photograph the build logs.",
+      body: [
+        "The city has two lives and they barely share an API. The one I photographed boots up after midnight, when the shutters of the daytime version roll up again over an entirely different cast. Same hardware, different OS.",
+        "Vendors who've worked the same corner for thirty years light their burners in the dark. The lighting is all theirs — bare bulbs, gas flame, the blue wash of a phone — and it sculpts faces in a way daylight never bothers to. I mostly tried not to get in the way of it.",
+        "I gave up directing anything pretty early. The market has its own choreography and the camera's only real job was to keep up — to be pointed in the right direction when some moment of ordinary, unrepeatable grace surfaced and then dissolved.",
+        "By dawn the stalls fold away like nothing happened, which is the unsettling part. The photographs are basically the only evidence that for a few hours the city belonged entirely to the people who feed it. A few frames from the week, below."
+      ],
+      photos: [
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDAgNDM0IEEgMjEwIDIxMCAwIDAgMSA0MjAgNDM0IFoiIGZpbGw9IiNlMDYzMWYiLz48cGF0aCBkPSJNIDM1MCA0NjIgQSAxNjggMTY4IDAgMCAxIDY4NiA0NjIgWiIgZmlsbD0iI2UzYTUyMSIvPjxjaXJjbGUgY3g9IjIxMCIgY3k9IjIxMCIgcj0iOTEiIGZpbGw9IiMxYTE4MTMiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA1NDYgQSAxNTQgMTU0IDAgMCAxIDE1NCA3MDAgWiIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==", caption: "Stall 14, just past midnight — the bulb string is the only thing on its own circuit." },
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDM1MCAxMDUgQSAyMTAgMjEwIDAgMCAwIDM1MCA1MjUgWiIgZmlsbD0iI2UzYTUyMSIvPjxwYXRoIGQ9Ik0gMzUwIDEwNSBBIDIxMCAyMTAgMCAwIDEgMzUwIDUyNSBaIiBmaWxsPSIjZTA2MzFmIi8+PHBhdGggZD0iTSAwIDcwMCBMIDIzOCA3MDAgTCAwIDM4NSBaIiBmaWxsPSIjMWExODEzIi8+PGNpcmNsZSBjeD0iNTg4IiBjeT0iMTQwIiByPSI4NCIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==", caption: "Steam off the grill catching the one blue sign still running on the block." },
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDAgMCBMIDQzNCAwIEEgNDM0IDQzNCAwIDAgMSAwIDQzNCBaIiBmaWxsPSIjZTA2MzFmIi8+PHBhdGggZD0iTSA3MDAgNzAwIEwgMzE1IDcwMCBBIDM4NSAzODUgMCAwIDEgNzAwIDMxNSBaIiBmaWxsPSIjZTNhNTIxIi8+PGNpcmNsZSBjeD0iMTU0IiBjeT0iNTQ2IiByPSI4NCIgZmlsbD0iIzFhMTgxMyIvPjxwYXRoIGQ9Ik0gNzAwIDAgTCA3MDAgMjEwIEEgMjEwIDIxMCAwIDAgMSA0OTAgMCBaIiBmaWxsPSIjMWY1YzUyIi8+PC9zdmc+", caption: "Closing time is a negotiation. Nobody photographs it except the regulars." }
+      ]
+    },
+    "post6": {
+      kicker: "Audio",
+      title: "The sound of a disappearing language",
+      author: "Priya Nair",
+      date: "June 11, 2026",
+      read: "9 min read",
+      dek: "Fewer than 200 fluent speakers left, most over seventy. We hit record before the sample size went to zero.",
+      body: [
+        "There are fewer than two hundred people who still speak it fluently, and most are past seventy. We went to record their voices before the silence everyone could see coming actually arrived. Not morbid, exactly. Just arithmetic.",
+        "A language isn't only words; it's a particular way of slicing the world into pieces. This one has a single term for the smell of rain on dry rock and, as far as anyone can tell, no word at all for loneliness. Make of that what you will — the linguists are still arguing.",
+        "The recordings turned into something bigger than an archive. Younger relatives started listening, then repeating, then asking their elders to teach them phrases they'd let slip decades ago. Documentation accidentally became transmission, which nobody had planned for.",
+        "Whether that's enough to save the language, no one will commit to. But watching a grandchild stumble through a sentence their grandmother assumed she'd take to the grave is, technically, a small act of survival in progress. Sample of one. Still counts."
+      ]
+    },
+    "sci-main": {
+      kicker: "Science · Lead",
+      title: "Why most of what you read about \u201cthe gene for X\u201d is structurally misleading",
+      author: "Theo Brandt",
+      date: "June 19, 2026",
+      read: "13 min read",
+      dek: "Not a claim that genetics is fake. A claim about what a correlation coefficient is and isn't allowed to tell you, and why headline writers keep ignoring the difference.",
+      body: [
+        "Start with the definition nobody states out loud: heritability is a population statistic, not a property of an individual. It describes the proportion of variance in a trait, within a specific population, under specific environmental conditions, that correlates with genetic variance. Change the population or the environment and the number changes too \u2014 sometimes substantially. This is not a footnote. It is the whole claim.",
+        "The standard failure mode is collapsing \u201c60% heritable\u201d into \u201c60% genetic, 40% environment,\u201d as if a trait were a pie to be sliced. It isn't. A trait can be 100% heritable in a given population and still be fully responsive to environmental intervention \u2014 height is the textbook case, rising substantially across generations with no change in the gene pool, purely from nutrition. Heritability and malleability are answering two different questions, and conflating them is the single most common error in lay science writing, by a wide margin.",
+        "Twin studies get cited as if they settle the matter; they constrain it, which is different. The equal-environments assumption \u2014 that identical and fraternal twins experience equally similar environments \u2014 is testable and frequently strained, especially for behavioral traits where identical twins are, empirically, treated more similarly by parents and peers. This doesn't invalidate twin methodology. It does mean the resulting estimates carry a wider error bar than the press release implies, and that error bar rarely makes it past the abstract.",
+        "None of this is an argument that genes don't matter, which is the inference people jump to defensively, as though pointing out a statistic is being misapplied is itself a political move. It's a narrower claim: a single number, extracted from one study population, reported without its confidence interval or its environmental assumptions, is not informative enough to support the sentence it's usually used to support. The number is real. The sentence built on top of it is doing more work than the number can carry.",
+        "If there's a practical takeaway, it's a filtering heuristic: any headline asserting a percentage \u201ccaused by genetics\u201d for a complex trait, without naming the population studied, is reporting a number it likely doesn't understand. Ask what population, what environment, what the confidence interval was. Most coverage cannot answer the question, which is itself the answer."
+      ]
+    },
+    "sci1": {
+      kicker: "Science",
+      title: "The replication crisis was never really about fraud",
+      author: "Theo Brandt",
+      date: "June 18, 2026",
+      read: "9 min read",
+      dek: "Outright fabrication makes the news. The boring failure mode \u2014 underpowered studies and flexible analysis \u2014 is doing most of the actual damage, quietly, at scale.",
+      body: [
+        "Fraud is satisfying to report because it has a villain. The actual base rate of fraud in published research is low \u2014 most estimates put outright fabrication in the low single digits as a percentage of irreproducible findings. The remainder is something less narratively convenient: small sample sizes combined with enough analytic flexibility that almost any dataset can be coaxed into a publishable p-value.",
+        "The mechanism is called researcher degrees of freedom, and it doesn't require bad faith to operate. Given a dataset, there are dozens of defensible choices \u2014 which outliers to exclude, which covariates to control for, which subgroup to highlight \u2014 and trying combinations until one clears the conventional significance threshold is not perceived as cheating by the people doing it. It's perceived as normal data exploration, because for most of the field's history, it was.",
+        "Preregistration exists specifically to remove this degree of freedom, by committing to an analysis plan before seeing the data. It is, predictably, unpopular, because it removes the flexibility that was generating a large share of the publishable results. The studies that do preregister show substantially lower effect sizes on replication \u2014 which is itself the diagnostic. The gap between preregistered and non-preregistered effect sizes is a fairly direct measurement of how much of the literature was, structurally, noise mining.",
+        "This is a depressing conclusion but not a nihilistic one. The fix isn't \u201ctrust science less\u201d in some undifferentiated way; it's \u201ctrust large preregistered replications more than single small studies,\u201d which is a perfectly tractable epistemic adjustment, just one that requires reading past the headline to the methods section, which almost nobody does."
+      ]
+    },
+    "sci2": {
+      kicker: "Science",
+      title: "Entropy is not \u201cdisorder.\u201d It never was.",
+      author: "Theo Brandt",
+      date: "June 16, 2026",
+      read: "8 min read",
+      dek: "The most common popular explanation of the second law of thermodynamics is a metaphor that actively misleads. Here is the version that doesn't.",
+      body: [
+        "\u201cEntropy is disorder\u201d is the explanation everyone gets in school, and it's wrong in a specific, fixable way. Entropy is a count of microstates \u2014 the number of distinct microscopic arrangements consistent with a given macroscopic description. A system moves toward higher entropy because high-entropy macrostates simply correspond to vastly more microstates, so a system exploring its possibility space randomly will, overwhelmingly probably, end up in one of those.",
+        "\u201cDisorder\u201d smuggles in an aesthetic judgment that has nothing to do with the math. A perfectly shuffled deck and a perfectly sorted deck are both single, specific microstates \u2014 equally improbable, equally low-entropy as individual outcomes. What differs is that \u201csorted\u201d is one arrangement out of many, while \u201clooks shuffled\u201d describes an enormous set of arrangements. The deck isn't moving toward disorder. It's moving toward the macrostate with the most members.",
+        "This reframing matters because the disorder metaphor breaks down precisely where people most want to use it \u2014 arguments about biological complexity, evolution, or any system that locally decreases apparent \u201cdisorder.\u201d Life isn't a thermodynamic anomaly; it's a structure that exports entropy to its surroundings faster than it organizes internally, which is fully consistent with the second law and requires no exception. The confusion only exists because the popular version of the law was never actually about disorder to begin with.",
+        "Worth saying plainly: this isn't a gotcha against anyone who learned the disorder version, since it's the version almost universally taught. It's just that \u201ccount the microstates\u201d is both more accurate and, with about five extra minutes of explanation, more intuitive than the metaphor it replaced."
+      ]
+    },
+    "sci3": {
+      kicker: "Science",
+      title: "Why \u201ccorrelation isn't causation\u201d is usually said wrong",
+      author: "Devin Park",
+      date: "June 14, 2026",
+      read: "7 min read",
+      dek: "The phrase gets deployed as a thought-terminating cliché. The actual tools for distinguishing the two are specific, learnable, and rarely taught alongside the slogan.",
+      body: [
+        "The phrase is true and almost useless on its own, because it identifies a problem without offering a method. Said without elaboration, it functions as a way to dismiss an inconvenient finding without engaging it \u2014 which is a misuse of what is, properly, a methodological starting point rather than a conversation-ending one.",
+        "The actual toolkit for distinguishing correlation from causation includes a short list of concrete questions: is there a plausible confound driving both variables, does the proposed cause precede the effect in time, does a dose-response relationship hold, and \u2014 the strongest evidence available outside a randomized trial \u2014 does a natural experiment or instrumental variable let you approximate randomization after the fact.",
+        "Randomized controlled trials remain the cleanest method specifically because randomization breaks the link between the treatment and any confounding variable, by construction, not by argument. Where RCTs are impossible \u2014 you cannot randomly assign people to smoke for thirty years \u2014 the field has developed a genuine toolkit of causal inference methods, and dismissing a well-constructed observational study with the bare phrase \u201ccorrelation isn't causation\u201d ignores that some observational designs are doing real causal work.",
+        "The more useful habit, replacing the slogan, is asking which specific confound the critic thinks is operating, and whether the original study already controlled for it. That's a falsifiable question. \u201cCorrelation isn't causation,\u201d offered with nothing behind it, is not."
+      ]
+    },
+
+    "pol-main": {
+      kicker: "Politics · Lead",
+      title: "Most policy disagreement isn't about values. It's about unstated empirical assumptions.",
+      author: "Sasha Reinholt",
+      date: "June 19, 2026",
+      read: "12 min read",
+      dek: "Two people can share a value completely and still disagree violently on policy, because they're running different models of how the world responds to an intervention. Separating the two would resolve more arguments than it seems like it should.",
+      body: [
+        "Take a policy debate at random and the standard framing is \u201ctwo sides with different values.\u201d In practice, a large share of disagreement survives even when both sides are asked to state their terminal values explicitly and discover they mostly agree \u2014 reduce suffering, preserve autonomy, grow the pie sustainably. What differs is the implicit causal model each side is running: what happens to behavior X if you change incentive Y. That's an empirical question with a right answer, even when nobody can currently produce it with confidence.",
+        "This matters because empirical disagreements and value disagreements require completely different resolution strategies, and conflating them guarantees stalemate. A value disagreement is, in the relevant sense, not resolvable by evidence \u2014 it's a question of what to optimize for. An empirical disagreement about mechanism is, in principle, resolvable by better data, better models, or a natural experiment. Treating the second kind like the first \u2014 \u201cwe'll just have to agree to disagree\u201d \u2014 forecloses an argument that didn't need to be foreclosed.",
+        "The minimum wage debate is the clean illustrative case. Almost everyone agrees, as a value, that low-wage workers should be able to live with dignity. The actual fight is over a specific elasticity \u2014 how much, if at all, does employment respond to a wage floor increase \u2014 and the honest answer is that the empirical literature is mixed, contingent on local labor market conditions, and has not converged. That's a very different conversation from \u201cyou don't care about workers,\u201d and treating it as a values fight just guarantees both sides talk past each other indefinitely.",
+        "A practical diagnostic: when a policy argument escalates and feels suddenly unresolvable, it's worth explicitly asking the other side what they predict will happen, mechanistically, if the policy is enacted. Often the values converge immediately and the actual gap is a disagreement about a coefficient \u2014 which is at least a question the world can, eventually, answer."
+      ]
+    },
+    "pol1": {
+      kicker: "Politics",
+      title: "Regulatory capture isn't a conspiracy. It's an incentive gradient.",
+      author: "Sasha Reinholt",
+      date: "June 17, 2026",
+      read: "10 min read",
+      dek: "No smoke-filled room required. The mechanism runs on information asymmetry and career incentives, and it would produce roughly the same outcome with entirely well-intentioned people on both sides.",
+      body: [
+        "Regulatory capture gets described as corruption, which is sometimes accurate and mostly beside the point. The structural version requires no bad actors: regulators need deep technical knowledge of an industry to regulate it competently, that knowledge mostly lives inside the industry, and the most qualified people to staff a regulatory body are, almost definitionally, people who have worked in or will work in the thing being regulated.",
+        "Add a second mechanism: the regulated industry has concentrated interest in regulatory outcomes \u2014 it's their whole business \u2014 while the diffuse public bears the cost of bad regulation in small, hard-to-attribute increments. Concentrated interest beats diffuse interest in almost every lobbying and attention contest, not because the public doesn't care, but because organizing widely distributed small costs into effective political pressure is a genuine coordination problem with no easy solution.",
+        "The revolving door compounds this without requiring any explicit quid pro quo. A regulator who knows their next job is plausibly at a firm they currently oversee has a rational, non-corrupt incentive to avoid being the person who tanks that firm's stock price \u2014 this requires no envelope of cash changing hands, just ordinary career-rational behavior under a structural conflict of interest.",
+        "The interesting policy implication is that solutions aimed at individual ethics \u2014 stricter recusal rules, cooling-off periods \u2014 only partially address a problem that's structural rather than personal. The cleaner fix, where it's been tried, involves changing the information asymmetry itself: mandated independent technical review, or funding public-interest expertise that doesn't depend on hiring directly from the regulated industry. Less satisfying than catching a villain. More likely to actually move the equilibrium."
+      ]
+    },
+    "pol2": {
+      kicker: "Politics",
+      title: "Why \u201cthe silent majority\u201d is usually a measurement artifact",
+      author: "Omar Reyes",
+      date: "June 15, 2026",
+      read: "8 min read",
+      dek: "Every faction in every debate claims to speak for a quiet, unpolled mass. The claim is mostly unfalsifiable by design \u2014 which is itself diagnostic.",
+      body: [
+        "\u201cThe silent majority agrees with us\u201d is a claim with a specific epistemic structure: it cannot be disconfirmed by any available evidence, because the people it refers to are, by definition, not showing up in the data that would disconfirm it. That structure should be a flag on its own, independent of whether the underlying claim happens to be true in any given case.",
+        "Where it's actually testable \u2014 via well-constructed polling, which does attempt to sample silent people \u2014 the silent-majority claim is right about as often as it's wrong, which is to say, it functions less as a factual claim and more as a rhetorical move available to literally any side of any argument, since it requires no evidence to assert and no evidence can directly rebut it.",
+        "The more interesting question is why the framing is so persistently appealing regardless of position. It lets a minority-within-the-visible-debate reframe themselves as a suppressed majority, which is psychologically comfortable and rhetorically powerful, and it does this symmetrically \u2014 every side of every sufficiently polarized debate tends to independently develop a version of this claim, which is itself evidence that it's tracking a feature of argument psychology rather than a feature of any specific electorate.",
+        "None of this means quiet preferences never exist or never get undercounted \u2014 they sometimes genuinely do, and good survey design is partly an effort to find them. It means the bare assertion, unaccompanied by methodology, is doing rhetorical work rather than empirical work, and treating it as the latter is a category error worth noticing in real time, mid-argument, rather than after."
+      ]
+    },
+    "pol3": {
+      kicker: "Politics",
+      title: "Term limits solve one principal-agent problem and create another",
+      author: "Sasha Reinholt",
+      date: "June 13, 2026",
+      read: "9 min read",
+      dek: "The standard case for term limits assumes the only failure mode is entrenchment. The empirical record suggests a second failure mode that gets considerably less airtime.",
+      body: [
+        "The case for term limits runs through a clean principal-agent argument: incumbents accumulate advantages \u2014 name recognition, donor networks, institutional knowledge used defensively \u2014 that insulate them from the electoral accountability the system is supposed to provide. Cap the tenure, the argument goes, and you restore the feedback loop. This part of the argument is reasonably well supported.",
+        "What it leaves out is a second principal-agent problem the cap introduces: a legislator who cannot run again has structurally reduced incentive to be responsive to constituents in their final term, since the electoral consequence that normally enforces responsiveness has been removed. Some of the empirical work on this \u2014 the \u201clame duck\u201d literature \u2014 finds measurable shifts in voting behavior and attendance in final terms, in the predicted direction.",
+        "There's a separate, less discussed cost: term limits systematically shift relative power toward staff, lobbyists, and the executive branch, simply because elected legislators are perpetually in their first or second term and therefore have less institutional expertise than the people around them who aren't term-limited. The expertise has to live somewhere. If it doesn't accumulate in elected officials, it accumulates in unelected ones, which is a trade some term-limit advocates don't seem to have priced in.",
+        "None of this is a knockdown argument against term limits \u2014 entrenchment is a real cost too, and reasonable people can weigh the two failure modes differently. It's an argument against treating the policy as a free lunch. It solves one accountability problem by trading it for a different one, and the honest version of the debate should be about which failure mode is worse in a given system, not whether a cost exists at all."
+      ]
+    },
+
+    "essay-main": {
+      kicker: "Essays · Lead",
+      title: "On the difference between a category and a cluster",
+      author: "Iris Vance",
+      date: "June 19, 2026",
+      read: "11 min read",
+      dek: "Most arguments about whether something \u201ccounts\u201d as X are arguments about where to draw a boundary in continuous space. Noticing that doesn't dissolve the disagreement, but it does relocate it somewhere more honest.",
+      body: [
+        "A surprising amount of unproductive argument traces back to treating a cluster as if it were a category. A category, in the strict sense, has necessary and sufficient membership conditions \u2014 a number is either prime or it isn't, no judgment call required. A cluster is a region of higher density in some underlying continuous space, with no sharp edge, and most of the concepts people argue about \u2014 art, fairness, intelligence, even species in some edge cases \u2014 are clusters wearing category-shaped language.",
+        "The trouble starts when two people are arguing about whether something belongs in a cluster while both using the grammar of category membership \u2014 \u201cis it really art\u201d implies a yes/no fact to be discovered, when the honest underlying question is closer to \u201chow far is this from the centroid of things we've historically called art, and does that distance matter for the purpose we're discussing.\u201d Those are different questions with different methods of resolution, and only one of them is actually answerable.",
+        "This isn't an argument for total relativism, which is the usual overcorrection people reach for once they notice the boundary is fuzzy. Clusters are still real and still informative \u2014 there's a genuine, non-arbitrary sense in which a Boeing 747 is much further from the center of \u201cchair\u201d than a beanbag is, even though both fail strict category membership at the edges. Fuzzy boundaries don't mean no information; they mean the information is graded rather than binary, which is a different epistemic situation, not a non-existent one.",
+        "The practical move, once you notice you're in a cluster argument rather than a category argument, is to ask what the boundary decision is actually for. \u201cIs this art\u201d resolved for a museum acquisition committee and for a tax-exemption statute are, legitimately, different questions that can produce different answers about the same object, without either committee being wrong \u2014 because the boundary was never a fact waiting to be discovered. It was a decision waiting to be made, for a purpose that should be stated rather than assumed."
+      ]
+    },
+    "essay1": {
+      kicker: "Essays",
+      title: "The map is not the territory, but most arguments are about the map",
+      author: "Iris Vance",
+      date: "June 17, 2026",
+      read: "8 min read",
+      dek: "A short case for noticing, mid-disagreement, whether you and the other person are even modeling the same level of abstraction.",
+      body: [
+        "Korzybski's line \u2014 the map is not the territory \u2014 gets quoted often enough to have lost most of its content, so it's worth restating precisely: any model is necessarily a lossy compression of the thing it models, and the compression is chosen for a purpose, which means a model can be simultaneously accurate and wrong, depending on which features the purpose required it to preserve.",
+        "Most disagreements that feel like factual disputes are actually disputes about which map is appropriate for the current purpose, with both parties implicitly assuming their map is simply \u201cthe territory\u201d and the other person's map is a distortion of it, rather than recognizing that both are compressions optimized for different things.",
+        "A concrete case: an economist's model of a market and a sociologist's model of the same market can both be locally correct and mutually frustrating to reconcile, not because one is wrong, but because they're preserving different features of the underlying territory and discarding different ones \u2014 price formation versus social embeddedness \u2014 and an argument conducted as if only one map could be the real one will never resolve, because it's not actually a disagreement about the territory.",
+        "The useful habit, again, is making the implicit explicit: before defending a claim, naming the model it's embedded in and the purpose that model was built for. It doesn't always dissolve the disagreement \u2014 sometimes the purposes genuinely conflict \u2014 but it at least relocates the argument to where it actually lives, instead of litigating it one abstraction layer too low."
+      ]
+    },
+    "essay2": {
+      kicker: "Essays",
+      title: "Steelmanning is harder than it sounds, and usually done wrong",
+      author: "Iris Vance",
+      date: "June 14, 2026",
+      read: "7 min read",
+      dek: "The instruction to \u201csteelman the other side\u201d gets followed about half as often as people claim, and the failure has a specific, recognizable shape.",
+      body: [
+        "The standard test for a steelman is whether the other side would recognize their position in your restatement of it. Most attempts fail this test quietly, because the person constructing the steelman is, structurally, still optimizing for their own argument \u2014 they reach for the strongest version of the opposing claim that they can still comfortably defeat, which is a stronger version of a strawman, not an actual steelman.",
+        "A genuine steelman requires temporarily adopting the other position's internal logic well enough to predict what its proponents would say in response to your objections, before you've made the objections \u2014 which is a meaningfully higher bar than restating their conclusion more charitably. Most people stop at restating the conclusion.",
+        "There's a useful diagnostic: if your steelman of a position is one you find easy to argue against, you probably haven't built the actual steelman yet. The real version should feel at least mildly uncomfortable to face, because if it didn't, you wouldn't need the exercise \u2014 the position would already have been easy to dismiss, and presumably wouldn't have persisted as a live disagreement among people who've thought about it carefully.",
+        "Worth noting as a closing caveat: steelmanning is a tool for improving your own reasoning, not a debate-club obligation owed to every position regardless of its evidentiary base. Some positions are weak on the merits and steelmanning them is an exercise, not a concession. The skill is knowing which situation you're in before you start."
+      ]
+    },
+    "essay3": {
+      kicker: "Essays",
+      title: "Why \u201cI just have a feeling\u201d is sometimes a valid epistemic input",
+      author: "Mara Ellison",
+      date: "June 12, 2026",
+      read: "9 min read",
+      dek: "An argument, made reluctantly, that intuition is occasionally tracking real signal a slower analytic process hasn't caught up to yet \u2014 and how to tell that case apart from the much more common one where it isn't.",
+      body: [
+        "Intuition has a poor reputation among people who otherwise value rigor, for understandable reasons \u2014 it's unfalsifiable in the moment, hard to interrogate, and a convenient cover for motivated reasoning. All true. The less comfortable fact is that intuition is, mechanistically, just fast pattern matching against a large base of prior experience, running below the threshold of conscious articulation \u2014 which means it can sometimes be detecting a real signal before the slower, explicit reasoning process has assembled the argument for it.",
+        "Chess masters provide the cleanest documented case: expert players reliably identify strong moves via rapid intuition before they can articulate why, and subsequent analysis usually vindicates the intuition. The mechanism isn't mysterious \u2014 it's compressed pattern recognition from tens of thousands of prior positions, operating faster than deliberate calculation. The intuition is real signal. It's just signal the conscious process hasn't caught up to explaining yet.",
+        "The hard part, and the actual point of this piece, is that this only holds in domains with fast, clear feedback and extensive repetition \u2014 chess, certain trading contexts, experienced clinical diagnosis. It does not generalize to domains with slow or absent feedback, like most political predictions or most claims about other people's inner motivations, where \u201cI just have a feeling\u201d is reliably indistinguishable, from the inside, between real compressed signal and plain motivated reasoning dressed up as instinct.",
+        "The honest discipline, then, isn't \u201ctrust your gut\u201d or \u201cnever trust your gut\u201d \u2014 it's asking whether the domain you're in has the feedback structure that makes intuition trustworthy in the first place, before deciding how much weight the feeling deserves. Most domains where people invoke a strong gut feeling, on inspection, don't have that structure. A few genuinely do. Telling them apart is most of the actual work."
+      ]
+    },
+
+    "photoroof": {
+      kicker: "Photo",
+      title: "The city from its rooftops",
+      author: "Jun Tanaka",
+      date: "June 10, 2026",
+      read: "6 min read",
+      dek: "Up a hundred fire-escape stairs, the city resolves into something almost legible. A week spent above the street, mostly at the hours nobody schedules.",
+      body: [
+        "Street level, the city is illegible — too much input, no overview. Climb a hundred fire-escape stairs, though, and it suddenly renders as a system: tanks, vents, antennas, the quiet infrastructure nobody designs to be seen.",
+        "The roofs are where a building keeps its honest self. Down on the facade it's all presentation; up here it's water tanks held together with faith and steel banding, decades of patch jobs stacked like sediment. I found it weirdly reassuring.",
+        "Light up there does something it can't at street level — it arrives uninterrupted, low and sideways at the edges of the day. I shot almost entirely at dawn and dusk, partly for the look, mostly because that's when the roofs are empty and nobody asks what you're doing.",
+        "None of it photographs as \u201ca skyline,\u201d which is the cliché I was trying to avoid. It photographs as a thousand small private decisions, made by people who assumed no one would ever be standing where I was standing. A few of them, below."
+      ],
+      photos: [
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDI4IDQ2MiBBIDMyMiAzMjIgMCAwIDEgNjcyIDQ2MiBaIiBmaWxsPSIjZTA2MzFmIi8+PGNpcmNsZSBjeD0iMzUwIiBjeT0iNDYyIiByPSIxMjYiIGZpbGw9IiNlM2E1MjEiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA0OTAgQSAyMTAgMjEwIDAgMCAxIDIxMCA3MDAgWiIgZmlsbD0iIzFhMTgxMyIvPjxwYXRoIGQ9Ik0gNzAwIDcwMCBMIDU0NiA3MDAgQSAxNTQgMTU0IDAgMCAxIDcwMCA1NDYgWiIgZmlsbD0iIzFmNWM1MiIvPjwvc3ZnPg==", caption: "Dawn, east side — the water tanks go dark a full hour before the street does." },
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDM1MCA1NiBBIDE2OCAxNjggMCAwIDAgMzUwIDM5MiBaIiBmaWxsPSIjMWExODEzIi8+PHBhdGggZD0iTSAzNTAgNTYgQSAxNjggMTY4IDAgMCAxIDM1MCAzOTIgWiIgZmlsbD0iIzFmNWM1MiIvPjxwYXRoIGQ9Ik0gMCA3MDAgTCAzNTAgNDIwIEwgNzAwIDcwMCBaIiBmaWxsPSIjZTNhNTIxIi8+PGNpcmNsZSBjeD0iMTI2IiBjeT0iNTQ2IiByPSI2MyIgZmlsbD0iI2UwNjMxZiIvPjwvc3ZnPg==", caption: "A patch job from three decades back, still holding." },
+        { src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MDAgNzAwIiB3aWR0aD0iNzAwIiBoZWlnaHQ9IjcwMCI+PHJlY3Qgd2lkdGg9IjcwMCIgaGVpZ2h0PSI3MDAiIGZpbGw9IiNmYWY3ZjEiLz48cGF0aCBkPSJNIDQ0OCAxODggTCA0NjcgNDM0IEEgOTEgOTEgMCAwIDEgMzcxIDQzNCBaIiBmaWxsPSIjMWY1YzUyIi8+PGNpcmNsZSBjeD0iMTk2IiBjeT0iMjEwIiByPSIxNDAiIGZpbGw9IiNlMDYzMWYiLz48cGF0aCBkPSJNIDAgNzAwIEwgMCA0NjIgQSAyMzggMjM4IDAgMCAxIDIzOCA3MDAgWiIgZmlsbD0iI2UzYTUyMSIvPjwvc3ZnPg==", caption: "Dusk is the only hour the roofs are emptied of everyone but the antennas." }
+      ]
+    }
+  };
+
+  var views = {
+    home: document.getElementById('homeView'),
+    science: document.getElementById('scienceView'),
+    politics: document.getElementById('politicsView'),
+    essays: document.getElementById('essaysView'),
+    reader: document.getElementById('readerView')
+  };
+  var burgerBtn = document.getElementById('burgerBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+
+  // tracks which view to return to when leaving the reader
+  var lastView = 'home';
+
+  function showView(name) {
+    Object.keys(views).forEach(function (key) {
+      views[key].classList.toggle('hidden', key !== name);
+    });
+    window.scrollTo(0, 0);
+  }
+
+  // ----- Mobile menu toggle -----
+  burgerBtn.addEventListener('click', function () {
+    var isOpen = !mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden', isOpen);
+    burgerBtn.setAttribute('aria-expanded', String(!isOpen));
+  });
+  // close mobile menu after tapping a link inside it
+  mobileMenu.addEventListener('click', function (e) {
+    if (e.target.tagName === 'A') {
+      mobileMenu.classList.add('hidden');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  // ----- Newsletter form (front-end only, no backend) -----
+  var dispatchForm = document.getElementById('dispatchForm');
+  var dispatchNote = document.getElementById('dispatchNote');
+  if (dispatchForm) {
+    dispatchForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = document.getElementById('dispatchEmail').value.trim();
+      if (email) {
+        dispatchNote.textContent = "Thanks — check " + email + " to confirm your subscription.";
+        dispatchForm.reset();
+      }
+    });
+  }
+
+  // ----- Subscribe button in nav scrolls to newsletter (only meaningful from home) -----
+  document.getElementById('navSubscribeBtn').addEventListener('click', function () {
+    if (lastView !== 'home') {
+      showView('home');
+      lastView = 'home';
+    }
+    document.getElementById('dispatch').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ----- Section navigation (Science / Politics / Essays) -----
+  document.querySelectorAll('.js-section').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      var section = el.getAttribute('data-section');
+      lastView = section;
+      showView(section);
+    });
+  });
+
+  // ----- Home navigation (logo, Culture, Photo, Audio, footer Culture) -----
+  document.querySelectorAll('.js-go-home').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      lastView = 'home';
+      showView('home');
+    });
+  });
+
+  // ----- Article open / close -----
+  function renderArticle(id) {
+    var a = articles[id];
+    if (!a) return;
+
+    document.getElementById('rKicker').textContent = a.kicker || '';
+    document.getElementById('rTitle').textContent = a.title || '';
+    document.getElementById('rDek').textContent = a.dek || '';
+    document.getElementById('rAuthor').textContent = 'By ' + (a.author || '');
+    document.getElementById('rDate').textContent = a.date || '';
+    document.getElementById('rRead').textContent = a.read || '';
+
+    var photosEl = document.getElementById('rPhotos');
+    photosEl.innerHTML = '';
+    if (a.photos && a.photos.length) {
+      a.photos.forEach(function (p) {
+        var fig = document.createElement('figure');
+        var img = document.createElement('img');
+        img.src = p.src;
+        img.alt = a.title;
+        var cap = document.createElement('figcaption');
+        cap.textContent = p.caption;
+        fig.appendChild(img);
+        fig.appendChild(cap);
+        photosEl.appendChild(fig);
+      });
+      photosEl.classList.remove('hidden');
+    } else {
+      photosEl.classList.add('hidden');
+    }
+
+    var bodyEl = document.getElementById('rBody');
+    bodyEl.innerHTML = '';
+    (a.body || []).forEach(function (para) {
+      var p = document.createElement('p');
+      p.textContent = para;
+      bodyEl.appendChild(p);
+    });
+
+    showView('reader');
+  }
+
+  document.querySelectorAll('.js-open').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      // remember which view we were on, but only if it isn't the reader itself
+      var current = Object.keys(views).find(function (key) {
+        return key !== 'reader' && !views[key].classList.contains('hidden');
+      });
+      if (current) lastView = current;
+      renderArticle(el.getAttribute('data-article'));
+    });
+  });
+
+  document.getElementById('goHomeLink').addEventListener('click', function (e) {
+    e.preventDefault();
+    showView(lastView);
+  });
+
+  // close mobile menu whenever a nav-style link is used to jump within the home view
+  document.addEventListener('click', function (e) {
+    var target = e.target.closest && e.target.closest('a.navlink, .logo');
+    if (target && !mobileMenu.classList.contains('hidden')) {
+      mobileMenu.classList.add('hidden');
+      burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+</body>
+</html>
