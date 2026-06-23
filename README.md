@@ -2,6 +2,8 @@
 
 Premium portfolio website for a web designer & developer based in Berlin, Germany.
 
+https://ematkovichh.github.io/Observers-Website/
+
 ## Features
 
 ✨ **Modern & Editorial Design** — Text-dominant layout with full-height image accent  
