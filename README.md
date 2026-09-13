@@ -6,11 +6,11 @@ https://ematkovichh.github.io/Observers-Website/
 
 ## Features
 
-✨ **Modern & Editorial Design** — Text-dominant layout with full-height image accent  
-🎨 **Smooth Animations** — Page loader, scroll reveals, hover effects  
-📱 **Fully Responsive** — Mobile, tablet, and desktop optimized  
-⚡ **Performance** — Pure HTML/CSS/JS, no frameworks, fast load times  
-🎯 **SEO Friendly** — Semantic HTML, proper meta tags  
+ **Modern & Editorial Design** — Text-dominant layout with full-height image accent  
+ **Smooth Animations** — Page loader, scroll reveals, hover effects  
+ **Fully Responsive** — Mobile, tablet, and desktop optimized  
+ **Performance** — Pure HTML/CSS/JS, no frameworks, fast load times  
+ **SEO Friendly** — Semantic HTML, proper meta tags  
 
 ## Structure
 
